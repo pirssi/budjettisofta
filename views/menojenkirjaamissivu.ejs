@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>menojen kirjaaminen</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+ 
+
+       $( function() {
+	
+			$('#datepicker').datepicker({ dateFormat: 'dd.mm.yy',  defaultDate: new Date(),
+			monthNames: [ "Tammikuu","Helmikuu","Maaliskuu","Huhtikuu","Toukokuu","Kesäkuu",
+			"Heinäkuu","Elokuu","Syyskuu","Lokakuu","Marraskuu","Joulukuu" ], dayNamesMin: [ "Su","Ma","Ti","Ke","To","Pe","La" ], firstDay: 1, altField:"#pelement"}).val();
+	
+		function getDate(){
+			var todaydate = new Date();
+			var day = todaydate.getDate();
+			if (day<10)
+			{
+				day = "0"+day;
+			}
+			var month = todaydate.getMonth() + 1;
+			if (month<10)
+			{
+				month = "0"+month;
+			}
+			var year = todaydate.getFullYear();
+			var datestring = day + "." + month + "." + year;
+			document.getElementById("datepicker").value = datestring;
+	} 
+		getDate(); 
+  } );
+  
+    </script>
+</head>
+
+<body>
+	<header>
+		<h1><center>Menojen kirjaaminen</center></h1>
+	</header>
+	<br/>
+
+	<p>Valitse olemassa oleva budjetti: <select id="budjetti" name="valmis budjetti">
+	<option value="tähän budjetteja">tähän budjetteja</option>
+	<option value="tähän budjetteja">tähän budjetteja</option>
+	</select>
+	</p>
+	<br/>
+	
+	<p>Valitse pääryhmä: <select id="paaryhma" name="paaryhma">
+	<option value="">Pääryhmä</option>
+	<option value="Pääryhmä">Pääryhmä</option>
+	</select>
+	</p>
+	<br/>
+	
+	<p>Valitse aliryhmä: <select id="aliryhma" name="aliryhma">
+	<option value="Aliryhmä">Aliryhmä</option>
+	<option value="Aliryhmä">Aliryhmä</option>
+	</select>
+	</p>
+	<br/>
+	
+	<p>Valitse päivämäärä: <input type="text" id="datepicker" value="tästä"></p>
+	<br/>
+
+	<p>Syötä ostopaikka: <input type="text" id="ostopaikka"></p>
+	<br/>
+	
+	<p>Syötä kuvaus: <input type="text" id="kuvaus"></p>
+	<br/>
+
+	<p>Syötä summa euroina: <input type="number" id="summa"></p>
+	<br/>
+	
+	<button id="insert">Hyväksy (lisää meno ryhmäänsä)</button>
+	<br/>
+	<br/>
+
+	<button id="Palaa">Palaa takaisin</button>
+</body>
+
+</html>

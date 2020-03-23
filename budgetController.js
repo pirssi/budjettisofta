@@ -13,6 +13,26 @@ var connection = mysql.createConnection({
 module.exports =
 {
 
+  loginKayttaja: function (req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+    if (username && password) {
+      connection.query('SELECT * FROM kayttaja WHERE Nimi = ? AND Salasana = ?', [username, password], function (error, results, fields) {
+        if (results.length > 0) {
+          req.session.loggedin = true;
+          req.session.username = username;
+          res.redirect('/');
+        } else {
+          res.send('Incorrect Username and/or Password!');
+        }
+        res.end();
+      });
+    } else {
+      res.send('Please enter Username and Password!');
+      res.end();
+    }
+  },
+
   fetchKayttajat: function (req, res) {
     let sql = 'SELECT Id, Nimi, Salasana FROM Kayttaja';
     /*if (req.query.asty_avain != undefined)

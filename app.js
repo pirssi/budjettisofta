@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
 });
 
 module.exports = {
-  loginKayttaja: async function(req, res) {
+  loginKayttaja: async function (req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
@@ -19,12 +19,12 @@ module.exports = {
       connection.query(
         "SELECT Id, Salasana FROM kayttaja WHERE Nimi = ?",
         [username],
-        function(error, results, fields) {
+        function (error, results, fields) {
           if (results.length > 0) {
             const hashedPassword = results[0].Salasana;
             const Id = results[0].Id;
 
-            bcrypt.compare(password, hashedPassword, function(err, isMatch) {
+            bcrypt.compare(password, hashedPassword, function (err, isMatch) {
               if (err) {
                 throw err;
               } else if (!isMatch) {
@@ -47,7 +47,7 @@ module.exports = {
     }
   },
 
-  registerKayttaja: async function(req, res) {
+  registerKayttaja: async function (req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
@@ -103,7 +103,7 @@ module.exports = {
       connection.query(
         "INSERT INTO kayttaja (Nimi, Salasana) VALUES (?, ?)",
         [username, hashedPassword],
-        function(error, results, fields) {
+        function (error, results, fields) {
           if (error) {
             if (error.code === "ER_DUP_ENTRY") {
               res.render("register.ejs", {
@@ -123,12 +123,12 @@ module.exports = {
     }
   },
 
-  fetchKayttajanBudjetit: function(req, res) {
+  fetchKayttajanBudjetit: function (req, res) {
     let sql =
       "SELECT K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = " +
       req.params.id;
 
-    connection.query(sql, function(error, results, fields) {
+    connection.query(sql, function (error, results, fields) {
       if (error) {
         console.log("Error fetching data from db, reason: " + error);
         res.send({ code: "NOT OK", error_msg: error, data: "" });
@@ -140,12 +140,12 @@ module.exports = {
     });
   },
 
-  fetchKayttajat: function(req, res) {
+  fetchKayttajat: function (req, res) {
     let sql = "SELECT Id, Nimi, Salasana FROM Kayttaja";
     if (req.query.nimi != undefined)
       sql += " AND Nimi LIKE '" + req.query.nimi + "'";
 
-    connection.query(sql, function(error, results, fields) {
+    connection.query(sql, function (error, results, fields) {
       if (error) {
         console.log("Error fetching data from db, reason: " + error);
         res.send({ code: "NOT OK", error_msg: error, data: "" });
@@ -156,10 +156,10 @@ module.exports = {
       }
     });
   },
-  fetchKayttaja: function(req, res) {
+  fetchKayttaja: function (req, res) {
     let sql = "SELECT * FROM Kayttaja WHERE Nimi = '" + req.params.nimi + "'";
 
-    connection.query(sql, function(error, results, fields) {
+    connection.query(sql, function (error, results, fields) {
       if (error) {
         console.log("Error fetching data from db, reason: " + error);
         res.send({ code: "NOT OK", error_msg: error, data: "" });

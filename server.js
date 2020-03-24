@@ -27,6 +27,10 @@ app.use(express.static('html_sivut'));
 
 // REST API Budget
 
+app.get('/', (req, res) => {
+    res.render('index.ejs')
+})
+
 app.route('/kayttajat')
     .get(BudgetController.fetchKayttajat);
 

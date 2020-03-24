@@ -1,10 +1,10 @@
-<h>
-    tere 
-    <% if (locals.name) { %>
-    <%= name %>
-    <% } %>
-    :D
-    <br><a href="/budjetit">Omat budjetit</a>
-    <br><a href="/menot">Menojen kirjaaminen</a>
-    <br><a href="/logout">Kirjaudu ulos</a>
-</h>
+<!DOCTYPE html>
+<body>
+  tere <% if (locals.name) { %> <%= name %> <% } %> :D
+  <br />
+  <a href="/budjetit">Omat budjetit</a>
+  <br />
+  <a href="/menot">Menojen kirjaaminen </a>
+  <br />
+  <a href="/logout">Kirjaudu ulos</a>
+</body>

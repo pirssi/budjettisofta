@@ -5,11 +5,6 @@ const express = require("express");
 const session = require("express-session");
 const BudgetController = require("./budgetController");
 
-const app = express();
-
-const hostname = "127.0.0.1";
-const port = process.env.PORT || 3001;
-
 const allowCrossDomain = function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
@@ -18,16 +13,18 @@ const allowCrossDomain = function(req, res, next) {
   next();
 };
 
+const hostname = "127.0.0.1";
+const port = 3001;
+
+const app = express();
 app.use(allowCrossDomain);
-
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   session({
-    secret: "secret",
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    secret: "89fd57581173dbe97a1e2b9221646b13082d174c78992182c086500f02d49e7b"
   })
 );
 

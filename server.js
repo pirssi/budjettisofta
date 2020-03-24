@@ -39,15 +39,16 @@ app.use(session({
 
 
 // etusivu
-app.get('/', (req, res) => {
-    if (req.session.loggedin) {
-        //res.send('Welcome back, ' + req.session.username + '!');
-        res.render('index.ejs', { name: req.session.username }) //väliaikasesti tohon enne ku johonki järkevämpään
-    } else {
-        res.redirect('/login');
-    }
-    res.end();
-});
+app.route('/')
+    .get((req, res) => {
+        if (req.session.loggedin) {
+            //res.send('Welcome back, ' + req.session.username + '!');
+            res.render('index.ejs', { name: req.session.username }) //väliaikasesti tohon enne ku johonki järkevämpään
+        } else {
+            res.redirect('/login');
+        }
+        res.end();
+    });
 
 //kirjautumissivu
 app.route('/login')
@@ -71,6 +72,8 @@ app.route('/register')
     })
     .post(BudgetController.registerKayttaja);
 
+
+//uloskirjautuminen
 app.route('/logout')
     .get((req, res) => {
         if (req.session.loggedin) {
@@ -86,16 +89,28 @@ app.route('/logout')
     })
 
 //menojenkirjaamissivu
-app.get('/menot', (req, res) => {
-    if (req.session.loggedin) {
-        //res.send('Welcome back, ' + req.session.username + '!');
-        res.render('menot.ejs')
-    } else {
-        res.redirect('/login');
-    }
-    res.end();
-})
+app.route('/menot')
+    .get((req, res) => {
+        if (req.session.loggedin) {
+            //res.send('Welcome back, ' + req.session.username + '!');
+            res.render('menot.ejs')
+        } else {
+            res.redirect('/login');
+        }
+        res.end();
+    })
 
+//omat budjetit
+app.route('/budjetit')
+    .get((req, res) => {
+        if (req.session.loggedin) {
+            //res.send('Welcome back, ' + req.session.username + '!');
+            res.render('budjetit.ejs', { name: req.session.username, userId: req.session.userId }) //väliaikasesti tohon enne ku johonki järkevämpään
+        } else {
+            res.redirect('/login');
+        }
+        res.end();
+    });
 
 /*
 BACKUP:D:D:D

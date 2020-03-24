@@ -20,11 +20,12 @@ module.exports =
 
     if (username && password) {
 
-      connection.query('SELECT Salasana FROM kayttaja WHERE Nimi = ?', [username], function (error, results, fields) {
+      connection.query('SELECT Id, Salasana FROM kayttaja WHERE Nimi = ?', [username], function (error, results, fields) {
         if (results.length > 0) {
           //console.log(results[0].Salasana);
 
           var hashedPassword = results[0].Salasana;
+          var Id = results[0].Id;
 
           bcrypt.compare(password, hashedPassword, function (err, isMatch) {
             if (err) {
@@ -36,6 +37,8 @@ module.exports =
               //console.log('jahuuuu');
               req.session.loggedin = true;
               req.session.username = username;
+              req.session.userId = Id;
+              //console.log(req.session.userId);
               res.redirect('/');
             }
           })
@@ -124,6 +127,33 @@ module.exports =
 
   },
 
+  //budjetit.ejs:n kutsuma funktio joka hakee kaikki kyseisen Id:n (kirjautuneen käyttäjän) budjetit
+  fetchKayttajanBudjetit: function (req, res) {
+    let sql = 'SELECT K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = ' + req.params.id;
+    /*if (req.query.asty_avain != undefined)
+      sql += " AND asty_avain = " + req.query.asty_avain;
+    if (req.query.nimi != undefined)
+      sql += " AND Nimi LIKE '" + req.query.nimi + "'"; //t*
+    /*if (req.query.osoite != undefined)
+      sql += " AND Osoite LIKE '" + req.query.osoite + "%'";*/
+
+    connection.query(sql, function (error, results, fields) {
+
+      if (error) {
+        console.log("Error fetching data from db, reason: " + error);
+        //res.send(error);
+        res.send({ code: "NOT OK", error_msg: error, data: "" });
+      }
+      else {
+        console.log("Data = " + JSON.stringify(results));
+        res.statusCode = 200;
+        res.json(results);
+
+      }
+    });
+
+  },
+
   fetchKayttajat: function (req, res) {
     let sql = 'SELECT Id, Nimi, Salasana FROM Kayttaja';
     /*if (req.query.asty_avain != undefined)
@@ -165,30 +195,5 @@ module.exports =
 
       }
     });
-  },
-  fetchKayttajanBudjetit: function (req, res) {
-    let sql = 'SELECT K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = ' + req.params.id;
-    /*if (req.query.asty_avain != undefined)
-      sql += " AND asty_avain = " + req.query.asty_avain;
-    if (req.query.nimi != undefined)
-      sql += " AND Nimi LIKE '" + req.query.nimi + "'"; //t*
-    /*if (req.query.osoite != undefined)
-      sql += " AND Osoite LIKE '" + req.query.osoite + "%'";*/
-
-    connection.query(sql, function (error, results, fields) {
-
-      if (error) {
-        console.log("Error fetching data from db, reason: " + error);
-        //res.send(error);
-        res.send({ code: "NOT OK", error_msg: error, data: "" });
-      }
-      else {
-        console.log("Data = " + JSON.stringify(results));
-        res.statusCode = 200;
-        res.json(results);
-
-      }
-    });
-
   }
 }

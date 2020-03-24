@@ -1,7 +1,7 @@
 "use strict";
 
-const app = require("./app");
 const bodyParser = require("body-parser");
+const controller = require("./controller");
 const express = require("express");
 const session = require("express-session");
 
@@ -47,14 +47,14 @@ app
     }
     res.end();
   })
-  .post(app.loginKayttaja);
+  .post(controller.loginKayttaja);
 
 app
   .route("/register")
   .get((req, res) => {
     res.render("register.ejs");
   })
-  .post(app.registerKayttaja);
+  .post(controller.registerKayttaja);
 
 app.route("/logout").get((req, res) => {
   if (req.session.loggedin) {
@@ -87,11 +87,11 @@ app.route("/budjetit").get((req, res) => {
   res.end();
 });
 
-app.route("/kayttajat").get(app.fetchKayttajat);
+app.route("/kayttajat").get(controller.fetchKayttajat);
 
-app.route("/kayttajanbudjetit/:id").get(app.fetchKayttajanBudjetit);
+app.route("/kayttajanbudjetit/:id").get(controller.fetchKayttajanBudjetit);
 
-app.route("/kayttaja/:nimi").get(app.fetchKayttaja);
+app.route("/kayttaja/:nimi").get(controller.fetchKayttaja);
 
 app.listen(port, hostname, () => {
     console.log(`Server running AT http://${hostname}:${port}/`);

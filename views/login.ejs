@@ -1,14 +1,12 @@
-<h1>Login</h1>
-<form action="/login" method="POST">
-    <div>
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" required>
-    </div>
-    <div>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <button type="submit">Login</button>
-    
-</form>
-<a href="/register">Register</a>
+<h1>Kirjaudu sisään</h1>
+<% if (locals.msg) { %>
+    <h2><%= msg %></h2>
+<% } %>
+<div>
+    <form action="/login" method="POST">
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <input type="submit">
+    </form>
+</div>
+<a href="/register">Rekisteröidy</a>

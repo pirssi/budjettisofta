@@ -2,7 +2,9 @@ var express = require("express");
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path')
+var bcrypt = require('bcrypt');
 var BudgetController = require('./budgetController');
+
 
 var app = express();
 
@@ -35,27 +37,84 @@ app.use(session({
 
 // REST API Budget
 
+
+// etusivu
+app.get('/', (req, res) => {
+    if (req.session.loggedin) {
+        //res.send('Welcome back, ' + req.session.username + '!');
+        res.render('index.ejs', { name: req.session.username }) //väliaikasesti tohon enne ku johonki järkevämpään
+    } else {
+        res.redirect('/login');
+    }
+    res.end();
+});
+
+//kirjautumissivu
+app.route('/login')
+    .get((req, res) => {
+        if (req.session.loggedin) {
+            //res.send('Welcome back, ' + req.session.username + '!');
+            res.redirect('/');
+        } else {
+            res.render('login.ejs');
+        }
+        res.end();
+
+    })
+    .post(BudgetController.loginKayttaja);
+
+
+//rekisteröitymissivu
+app.route('/register')
+    .get((req, res) => {
+        res.render('register.ejs')
+    })
+    .post(BudgetController.registerKayttaja);
+
+app.route('/logout')
+    .get((req, res) => {
+        if (req.session.loggedin) {
+            //res.send('Welcome back, ' + req.session.username + '!');
+            req.session.loggedin = false;
+            res.redirect('/');
+        } else {
+            res.redirect('/');
+            //res.render('login.ejs');
+        }
+        res.end();
+
+    })
+
+//menojenkirjaamissivu
+app.get('/menot', (req, res) => {
+    if (req.session.loggedin) {
+        //res.send('Welcome back, ' + req.session.username + '!');
+        res.render('menot.ejs')
+    } else {
+        res.redirect('/login');
+    }
+    res.end();
+})
+
+
+/*
+BACKUP:D:D:D
+
+
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname + '/views/login.html'));
+    res.render('login.ejs')
 });
 
 app.route('/auth')
     .post(BudgetController.loginKayttaja);
 
-
-app.get('/', (req, res) => {
-	if (req.session.loggedin) {
-        //res.send('Welcome back, ' + req.session.username + '!');
-        res.render('menojenkirjaamissivu.ejs')
-	} else {
-		res.redirect('/login');
-	}
-	res.end();
+    
+app.get('/register', (req, res) => {
+    res.render('register.ejs')
 });
+    
+*/
 
-app.get('/menot', (req, res) => {
-    res.render('menojenkirjaamissivu.ejs')
-})
 
 //routeja ala WOK
 
@@ -95,3 +154,11 @@ app.route('/BudgetType/:Selite')
 app.listen(port, hostname, () => {
     console.log(`Server running AT http://${hostname}:${port}/`);
 });
+
+
+/*
+TODO:
+
+uloskirjaus
+käyttäjänimet välilyönnittömiks?
+*/

@@ -1,1 +1,8 @@
-<h>tere:D <%= name %></h>
+<h>
+    tere 
+    <% if (locals.name) { %>
+    <%= name %>
+    <% } %>
+    :D
+    <br><a href="/logout">Kirjaudu ulos</a>
+</h>

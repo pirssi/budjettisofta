@@ -2,6 +2,7 @@
 
 // npm install mysql --save
 var mysql = require('mysql');
+var bcrypt = require('bcrypt');
 
 var connection = mysql.createConnection({
   host: 'localhost',
@@ -12,10 +13,11 @@ var connection = mysql.createConnection({
 
 module.exports =
 {
-
+  //Kirjautumisen (login.ejs) kutsuma funktio
   loginKayttaja: function (req, res) {
     var username = req.body.username;
     var password = req.body.password;
+    
     if (username && password) {
       connection.query('SELECT * FROM kayttaja WHERE Nimi = ? AND Salasana = ?', [username, password], function (error, results, fields) {
         if (results.length > 0) {
@@ -23,14 +25,44 @@ module.exports =
           req.session.username = username;
           res.redirect('/');
         } else {
-          res.send('Incorrect Username and/or Password!');
+          res.render('login.ejs', { msg: 'Nimi tai salasana on väärä' });
         }
         res.end();
       });
     } else {
-      res.send('Please enter Username and Password!');
+      res.render('login.ejs', { msg: 'Syötä nimi ja salasana' });
       res.end();
     }
+  },
+
+
+  //Rekisteröinnin (/)register.ehs) kutsuma funktio
+  registerKayttaja: async function (req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+    //if (username && password) {
+
+    try {
+      var hashedPassword = await bcrypt.hash(password, 10)
+      //console.log(hashedPassword)
+    } catch {
+      res.render('register.ejs', { msg: 'Virhe, yritä uudestaan' });
+    }
+    connection.query('INSERT INTO kayttaja (Nimi, Salasana) VALUES (?, ?)', [username, hashedPassword], function (error, results, fields) {
+      if (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+          res.render('register.ejs', { msg: 'Käyttäjän nimi on jo käytössä' });
+        }
+        else {
+          res.render('register.ejs', { msg: error });
+        }
+      }
+      else {
+        //console.log("Data = " + JSON.stringify(results)); //poista tää ku toimii :D 
+        res.statusCode = 201;
+        res.redirect('/login');
+      }
+    });
   },
 
   fetchKayttajat: function (req, res) {

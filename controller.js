@@ -50,7 +50,7 @@ module.exports = {
               } else if (result) {
                 req.session.loggedIn = true;
                 req.session.username = username;
-                req.session.userId = Id;
+                req.session.userId = data.Id;
                 res.redirect("/");
               }
             });
@@ -70,9 +70,9 @@ module.exports = {
     const password = req.body.password;
 
     if (username && password) {
-      if (!hasWhiteSpace(username) && !hasWhiteSpace(password)) {
+      if (hasWhiteSpace(username) || hasWhiteSpace(password)) {
         res.render("register.ejs", {
-          msg: "Käyttäjänimi tai salasana eivät saa sisältää välilyöntejä!"
+          msg: "Käyttäjänimi ja salasana eivät saa sisältää välilyöntejä!"
         });
       } else if (
         !isBetweenMinAndMaxLength(

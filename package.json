@@ -1,5 +1,5 @@
 {
-  "name": "Budjettisofta",
+  "name": "budjettisofta",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -20,6 +20,17 @@
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
-    "nodemon": "^2.0.2"
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.9",
+    "nodemon": "^2.0.2",
+    "prettier": "^2.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js}": "prettier --write"
   }
 }

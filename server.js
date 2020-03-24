@@ -1,18 +1,16 @@
 "use strict";
 
-var express = require("express");
-var session = require("express-session");
-var bodyParser = require("body-parser");
-var path = require("path");
-var bcrypt = require("bcrypt");
-var BudgetController = require("./budgetController");
+const bodyParser = require("body-parser");
+const express = require("express");
+const session = require("express-session");
+const BudgetController = require("./budgetController");
 
-var app = express();
+const app = express();
 
 const hostname = "127.0.0.1";
 const port = process.env.PORT || 3001;
 
-var allowCrossDomain = function(req, res, next) {
+const allowCrossDomain = function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type");

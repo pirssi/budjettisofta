@@ -11,11 +11,11 @@ var app = express();
 const hostname = '127.0.0.1';
 const port = process.env.PORT || 3001;
 
-//CORS middleware Cross-Origin Resource Sharing 
+//CORS middleware Cross-Origin Resource Sharing
 var allowCrossDomain = function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
 
     next();
 }
@@ -32,8 +32,9 @@ app.use(bodyParser.json());
 app.use(session({
     secret: 'secret',
     resave: true,
-    saveUninitialized: true
-}));
+    saveUninitialized: true,
+  })
+);
 
 // REST API Budget
 
@@ -101,16 +102,18 @@ app.route('/menot')
     })
 
 //omat budjetit
-app.route('/budjetit')
-    .get((req, res) => {
-        if (req.session.loggedin) {
-            //res.send('Welcome back, ' + req.session.username + '!');
-            res.render('budjetit.ejs', { name: req.session.username, userId: req.session.userId }) //väliaikasesti tohon enne ku johonki järkevämpään
-        } else {
-            res.redirect('/login');
-        }
-        res.end();
-    });
+app.route("/budjetit").get((req, res) => {
+  if (req.session.loggedin) {
+    //res.send('Welcome back, ' + req.session.username + '!');
+    res.render("budjetit.ejs", {
+      name: req.session.username,
+      userId: req.session.userId,
+    }); //väliaikasesti tohon enne ku johonki järkevämpään
+  } else {
+    res.redirect("/login");
+  }
+  res.end();
+});
 
 /*
 BACKUP:D:D:D

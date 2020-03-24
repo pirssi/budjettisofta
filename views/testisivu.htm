@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>testings</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $('#data').click(function () {
+                fetch();
+            });
+
+
+
+
+
+
+        });
+
+        function fetch() {
+            let nH = $("#nimiHaku").val();
+            let ss = $('#salasana').val();
+
+
+            let query = "";
+            if (nH != "")
+                query += nH;
+
+
+            console.log("query = " + query);
+
+            let url = "asd";
+
+            $.get(
+                "http://localhost:3001/kayttaja/" + query,
+
+                function (data, status, xhr) {
+                    let warn = "";
+                    if (status != "") {
+                        warn += status;
+                        console.log(warn);
+                    }
+                    console.log(data);
+
+
+                    if (true) { //tohon esim salasanacheck:DDD
+                        var json_array = data;
+                        var tuotedata = "";
+                        $('#table').empty();
+                        tuotedata += '<tr>';
+                        tuotedata += '<th>' + 'Avain' + '</th>';
+                        tuotedata += '<th>' + 'Nimi' + '</th>';
+                        tuotedata += '<th>' + 'Salasana' + '</th>';
+                        tuotedata += '</tr>';
+
+                        $.each(data, function (index, json_obj) {
+                            tuotedata += '<tr>'
+                            tuotedata += '<td>' + json_obj.Id + '</td>';
+                            tuotedata += '<td>' + json_obj.Nimi + '</td>';
+                            tuotedata += '<td>' + json_obj.Salasana + '</td>';
+                            tuotedata += '</tr>'
+
+                        });
+                        $('#table').append(tuotedata);
+                    }
+
+                })
+
+        }
+
+    </script>
+</head>
+
+<body>
+
+
+    <label>test</label><br>
+    <label>Kirjoita nimi:<input id="nimiHaku"></input></label></br></br>
+    <label>Kirjoita salasana:<input id="salasana"></input></label></br></br>
+    <button id="data">Hae data</button>
+
+
+    <table id="table"></table>
+
+</body>
+
+</html>

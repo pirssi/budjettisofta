@@ -1,9 +1,10 @@
 var express = require("express");
-var app = express();
-
-// npm install body-parser
+var session = require('express-session');
 var bodyParser = require('body-parser');
+var path = require('path')
 var BudgetController = require('./budgetController');
+
+var app = express();
 
 const hostname = '127.0.0.1';
 const port = process.env.PORT || 3001;
@@ -23,13 +24,40 @@ app.use(allowCrossDomain);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static('html_sivut'));
+//app.use(express.static('html_sivut'));
+
+
+app.use(session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+}));
 
 // REST API Budget
 
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname + '/views/login.html'));
+});
+
+app.route('/auth')
+    .post(BudgetController.loginKayttaja);
+
+
 app.get('/', (req, res) => {
-    res.render('index.ejs')
+	if (req.session.loggedin) {
+        //res.send('Welcome back, ' + req.session.username + '!');
+        res.render('menojenkirjaamissivu.ejs')
+	} else {
+		res.redirect('/login');
+	}
+	res.end();
+});
+
+app.get('/menot', (req, res) => {
+    res.render('menojenkirjaamissivu.ejs')
 })
+
+//routeja ala WOK
 
 app.route('/kayttajat')
     .get(BudgetController.fetchKayttajat);

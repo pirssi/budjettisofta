@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 
 const bcrypt = require("bcrypt");
 const mysql = require("mysql");
@@ -58,7 +58,7 @@ module.exports = {
             res.render("login.ejs", { msg: "Nimi tai salasana väärin!" });
           }
         }
-      })
+      );
     } else {
       res.render("login.ejs", { msg: "Syötä nimi ja salasana!" });
       res.end();
@@ -123,8 +123,6 @@ module.exports = {
     } else {
       res.render("register.ejs", { msg: "Syötä nimi ja salasana!" });
     }
-
-
   },
 
   fetchBudgets: function (req, res) {

@@ -13,10 +13,10 @@ const allowCrossDomain = function(req, res, next) {
     next();
 }
 
+const app = express();
 const hostname = "127.0.0.1";
 const port = 3001;
 
-const app = express();
 app.use(allowCrossDomain);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -51,18 +51,14 @@ app
 
 app
   .route("/register")
-  .get((req, res) => {
+  .get((_req, res) => {
     res.render("register.ejs");
   })
-  .post(controller.registerKayttaja);
+  .post(controller.register);
 
 app.route("/logout").get((req, res) => {
-  if (req.session.loggedIn) {
-    req.session.loggedIn = false;
-    res.redirect("/");
-  } else {
-    res.redirect("/");
-  }
+  req.session.destroy();
+  res.redirect("/");
   res.end();
 });
 
@@ -87,12 +83,8 @@ app.route("/budjetit").get((req, res) => {
   res.end();
 });
 
-app.route("/kayttajat").get(controller.fetchKayttajat);
-
-app.route("/kayttajanbudjetit/:id").get(controller.fetchKayttajanBudjetit);
-
-app.route("/kayttaja/:nimi").get(controller.fetchKayttaja);
+app.route("/kayttajanbudjetit/:id").get(controller.fetchBudgets);
 
 app.listen(port, hostname, () => {
-    console.log(`Server running AT http://${hostname}:${port}/`);
+  console.log(`Server running at http://${hostname}:${port}/`);
 });

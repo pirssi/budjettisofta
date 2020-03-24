@@ -3,7 +3,7 @@
 const mysql = require("mysql");
 const bcrypt = require("bcrypt");
 
-const connection = mysql.createConnection({
+const dbConnection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "root",
@@ -11,38 +11,39 @@ const connection = mysql.createConnection({
 });
 
 module.exports = {
-  loginKayttaja: async function (req, res) {
+  login: async function (req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
     if (username && password) {
-      connection.query(
+      dbConnection.query(
         "SELECT Id, Salasana FROM kayttaja WHERE Nimi = ?",
         [username],
-        function (error, results, fields) {
-          if (results.length > 0) {
-            const hashedPassword = results[0].Salasana;
-            const Id = results[0].Id;
+        function (error, results) {
+          if (error) {
+            res.render("login.ejs", { msg: error });
+          }
 
-            bcrypt.compare(password, hashedPassword, function (err, isMatch) {
+          if (results.length > 0) {
+            const data = results[0];
+
+            bcrypt.compare(password, data.Salasana, function (err, result) {
               if (err) {
-                throw err;
-              } else if (!isMatch) {
-                res.render("login.ejs", { msg: "Salasana ei täsmää" });
-              } else {
-                req.session.loggedin = true;
+                res.render("login.ejs", { msg: err });
+              } else if (result) {
+                req.session.loggedIn = true;
                 req.session.username = username;
                 req.session.userId = Id;
                 res.redirect("/");
               }
             });
           } else {
-            res.render("login.ejs", { msg: "Nimeä ei löydy" });
+            res.render("login.ejs", { msg: "Nimi tai salasana väärin!" });
           }
         }
       })
     } else {
-      res.render('login.ejs', { msg: 'Syötä nimi ja salasana' });
+      res.render("login.ejs", { msg: "Syötä nimi ja salasana!" });
       res.end();
     }
   },
@@ -100,10 +101,10 @@ module.exports = {
       } catch {
         res.render('register.ejs', { msg: 'Virhe, yritä uudestaan' });
       }
-      connection.query(
+      dbConnection.query(
         "INSERT INTO kayttaja (Nimi, Salasana) VALUES (?, ?)",
         [username, hashedPassword],
-        function (error, results, fields) {
+        function (error, results) {
           if (error) {
             if (error.code === "ER_DUP_ENTRY") {
               res.render("register.ejs", {
@@ -138,7 +139,7 @@ module.exports = {
       "SELECT K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = " +
       req.params.id;
 
-    connection.query(sql, function (error, results, fields) {
+    dbConnection.query(sql, function (error, results) {
       if (error) {
         console.log("Error fetching data from db, reason: " + error);
         res.send({ code: "NOT OK", error_msg: error, data: "" });
@@ -158,7 +159,7 @@ module.exports = {
     if (req.query.nimi != undefined)
       sql += " AND Nimi LIKE '" + req.query.nimi + "'";
 
-    connection.query(sql, function (error, results, fields) {
+    dbConnection.query(sql, function (error, results) {
       if (error) {
         console.log("Error fetching data from db, reason: " + error);
         res.send({ code: "NOT OK", error_msg: error, data: "" });
@@ -174,7 +175,7 @@ module.exports = {
   fetchKayttaja: function (req, res) {
     let sql = "SELECT * FROM Kayttaja WHERE Nimi = '" + req.params.nimi + "'";
 
-    connection.query(sql, function (error, results, fields) {
+    dbConnection.query(sql, function (error, results) {
       if (error) {
         console.log("Error fetching data from db, reason: " + error);
         res.send({ code: "NOT OK", error_msg: error, data: "" });

@@ -29,7 +29,7 @@ app.use(
 );
 
 app.route("/").get((req, res) => {
-  if (req.session.loggedin) {
+  if (req.session.loggedIn) {
     res.render("index.ejs", { name: req.session.username });
   } else {
     res.redirect("/login");
@@ -40,14 +40,14 @@ app.route("/").get((req, res) => {
 app
   .route("/login")
   .get((req, res) => {
-    if (req.session.loggedin) {
+    if (req.session.loggedIn) {
       res.redirect("/");
     } else {
       res.render("login.ejs");
     }
     res.end();
   })
-  .post(controller.loginKayttaja);
+  .post(controller.login);
 
 app
   .route("/register")
@@ -57,8 +57,8 @@ app
   .post(controller.registerKayttaja);
 
 app.route("/logout").get((req, res) => {
-  if (req.session.loggedin) {
-    req.session.loggedin = false;
+  if (req.session.loggedIn) {
+    req.session.loggedIn = false;
     res.redirect("/");
   } else {
     res.redirect("/");
@@ -67,7 +67,7 @@ app.route("/logout").get((req, res) => {
 });
 
 app.route("/menot").get((req, res) => {
-  if (req.session.loggedin) {
+  if (req.session.loggedIn) {
     res.render("menot.ejs");
   } else {
     res.redirect("/login");
@@ -76,7 +76,7 @@ app.route("/menot").get((req, res) => {
 });
 
 app.route("/budjetit").get((req, res) => {
-  if (req.session.loggedin) {
+  if (req.session.loggedIn) {
     res.render("budjetit.ejs", {
       name: req.session.username,
       userId: req.session.userId

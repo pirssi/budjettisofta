@@ -1,44 +1,43 @@
+<!DOCTYPE html>
 <head>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <title>budjetit tosijjaan </title>
-    
-    <script>
-        var Id = <%= userId %> ; //huutaa erroreita, mut toimii
-        
-        
-        $(function () {
-            fetchBudgets();
-        });
+  <meta charset="utf-8" />
+  <link
+    rel="stylesheet"
+    href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+  />
+  <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <title>budjetit tosijjaan</title>
 
-        function fetchBudgets() {
-            $.get(
-                "/kayttajanbudjetit/" + Id,
-                function (data, status, xhr) {
-                    $("#budjetit").append('<option value="-1">Valitse</option>');
-                    $.each(data, function (index, data) {
-                        $("#budjetit").append('<option value="' + data.Id + '">' + data.NIMI + "</option>");
-                    });
-                })
-        }
-    </script>
+  <script>
+    var Id = <%= userId %> ; //huutaa erroreita, mut toimii
+
+    $(function () {
+        fetchBudgets();
+    });
+
+    function fetchBudgets() {
+        $.get(
+            "/kayttajanbudjetit/" + Id,
+            function (data, status, xhr) {
+                $("#budjetit").append('<option value="-1">Valitse</option>');
+                $.each(data, function (index, data) {
+                    $("#budjetit").append('<option value="' + data.Id + '">' + data.NIMI + "</option>");
+                });
+            })
+    }
+  </script>
 </head>
+<body>
+  tere <% if (locals.name) { %> <%= name %> <% } %> :D
 
-<h>
-    tere
-    <% if (locals.name) { %>
-    <%= name %>
-    <% } %>
-    :D
-
-</h>
-
-<br>
-<label>Budjetit:<select id="budjetit">
-</select></label>
-<br><a href="/">Etusivu</a>
-<br><a href="/menot">Menojen kirjaaminen</a>
-<br><a href="/logout">Kirjaudu ulos</a>
+  <br />
+  <label>Budjetit:<select id="budjetit"> </select></label>
+  <br />
+  <a href="/">Etusivu</a>
+  <br />
+  <a href="/menot">Menojen kirjaaminen</a>
+  <br />
+  <a href="/logout">Kirjaudu ulos</a>
+</body>

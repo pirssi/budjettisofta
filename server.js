@@ -6,6 +6,8 @@ var bcrypt = require('bcrypt');
 var BudgetController = require('./budgetController');
 
 //noi kaikki yllä olevat pitää jokanen asentaa kirjattamalla consoleen 'npm i {paketin nimi eli express, session, bcrypt jne}'
+//npm i express express-session body-parser path bcrypt mysql ejs
+//npm i --save-dev nodemon dotenv
 
 var app = express();
 

@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>menojen kirjaaminen</title>
-
-    <link
-      rel="stylesheet"
-      href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
-    />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+  />
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -54,15 +55,17 @@
         }
         getDate();
       });
+    
     </script>
   </head>
 
-  <body>
+<body>
     <header>
       <h1><center>Menojen kirjaaminen</center></h1>
     </header>
     <br />
-
+  <div>
+  <form action="/menot" method="POST">
     <p>
       Valitse olemassa oleva budjetti:
       <select id="budjetti" name="valmis budjetti">
@@ -104,10 +107,18 @@
     <p>Syötä summa euroina: <input type="number" id="summa" /></p>
     <br />
 
-    <button id="insert">Hyväksy (lisää meno ryhmäänsä)</button>
-    <br />
-    <br />
+    <input
+        type="submit"
+        value="Hyväksy meno"
+        class="btn btn-success"
+    />
+      <br />
+      <br />
 
-    <button id="Palaa">Palaa takaisin</button>
+      <button onclick="location.href='/index'" type="button" class="btn btn-primary">Palaa etusivulle</button>
+    </form>
+  </div>
+
+
   </body>
 </html>

@@ -52,6 +52,8 @@ module.exports = {
                 req.session.username = username;
                 req.session.userId = data.Id;
                 res.redirect("/");
+              } else {
+                res.render("login.ejs", { msg: "Nimi tai salasana väärin!" });
               }
             });
           } else {

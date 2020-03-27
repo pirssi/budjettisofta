@@ -5,7 +5,7 @@ const controller = require("./controller");
 const express = require("express");
 const session = require("express-session");
 
-const allowCrossDomain = function(req, res, next) {
+const allowCrossDomain = function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type");
@@ -74,18 +74,6 @@ app.route("/menot").get((req, res) => {
 app.route("/budjetit").get((req, res) => {
   if (req.session.loggedIn) {
     res.render("budjetit.ejs", {
-      name: req.session.username,
-      userId: req.session.userId
-    });
-  } else {
-    res.redirect("/login");
-  }
-  res.end();
-});
-
-app.route("/index").get((req, res) => {
-  if (req.session.loggedIn) {
-    res.render("index.ejs", {
       name: req.session.username,
       userId: req.session.userId
     });

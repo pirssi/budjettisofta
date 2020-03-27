@@ -8,6 +8,11 @@
   <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+/>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <title>budjetit tosijjaan</title>
 
   <script>
@@ -21,7 +26,7 @@
         $.get(
             "/kayttajanbudjetit/" + Id,
             function (data, status, xhr) {
-                $("#budjetit").append('<option value="-1">Valitse</option>');
+                $("#budjetit").append('<option value="-1">Valitse budjetti</option>');
                 $.each(data, function (index, data) {
                     $("#budjetit").append('<option value="' + data.Id + '">' + data.NIMI + "</option>");
                 });
@@ -30,14 +35,17 @@
   </script>
 </head>
 <body>
-  Tervetuloa <% if (locals.name) { %> <%= name %> <% } %>
-
+  <h1><center>Tervetuloa <% if (locals.name) { %> <%= name %> <% } %></center></h1>
   <br />
-  <label>Budjetit:<select id="budjetit"> </select></label>
   <br />
-  <a href="/">Etusivu</a>
+  <center><label>Budjetit:<select id="budjetit" class="form-control"> </select></label></center>
   <br />
-  <a href="/menot">Menojen kirjaaminen</a>
   <br />
-  <a href="/logout">Kirjaudu ulos</a>
+  <center><button onclick="location.href='/'" type="button" class="btn btn-primary">Etusivu</button></center>
+  <br />
+  <br />
+  <center><button onclick="location.href='/menot'" type="button" class="btn btn-primary">Menojen kirjaaminen</button></center>
+  <br />
+  <br />
+  <center><button onclick="location.href='/logout'" type="button" class="btn btn-danger">Kirjaudu ulos</button></center>
 </body>

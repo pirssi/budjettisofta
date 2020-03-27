@@ -1,10 +1,20 @@
 <!DOCTYPE html>
+<head>
+  <link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+/>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
 <body>
-  Tervetuloa <% if (locals.name) { %> <%= name %> <% } %>
+  <h1><center>Tervetuloa <% if (locals.name) { %> <%= name %> <% } %></center></h1>
   <br />
-  <a href="/budjetit">Omat budjetit</a>
   <br />
-  <a href="/menot">Menojen kirjaaminen </a>
+<center><button onclick="location.href='/budjetit'" type="button" class="btn btn-primary">Omat budjetit</button></center>
   <br />
-  <a href="/logout">Kirjaudu ulos</a>
+  <br />
+<center><button onclick="location.href='/menot'" type="button" class="btn btn-primary">Menojen kirjaaminen</button></center>
+  <br />
+  <br />
+<center><button onclick="location.href='/logout'" type="button" class="btn btn-danger">Kirjaudu ulos</button></center>
 </body>

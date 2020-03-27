@@ -83,6 +83,18 @@ app.route("/budjetit").get((req, res) => {
   res.end();
 });
 
+app.route("/index").get((req, res) => {
+  if (req.session.loggedIn) {
+    res.render("index.ejs", {
+      name: req.session.username,
+      userId: req.session.userId
+    });
+  } else {
+    res.redirect("/login");
+  }
+  res.end();
+});
+
 app.route("/kayttajanbudjetit/:id").get(controller.fetchBudgets);
 
 app.listen(port, hostname, () => {

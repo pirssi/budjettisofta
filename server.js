@@ -64,7 +64,9 @@ app.route("/logout").get((req, res) => {
 
 app.route("/menot").get((req, res) => {
   if (req.session.loggedIn) {
-    res.render("menot.ejs");
+    res.render("menot.ejs",{
+      name: req.session.username,
+      userId: req.session.userId});
   } else {
     res.redirect("/login");
   }

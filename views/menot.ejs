@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <style>
+      .divider{
+    width:40px;
+    height:auto;
+    display:inline-block;
+}
+    </style>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link
     rel="stylesheet"
@@ -137,15 +144,26 @@
     <center><p>Syötä summa euroina: <input type="number" id="summa" class="form-control" placeholder="Summa"/></p></center>
     <br />
 
-    <center><input
-        type="submit"
-        value="Hyväksy meno"
-        class="btn btn-success"
-    /></center>
-      <br />
-    <center><button onclick="location.href='/'" type="button" class="btn btn-primary">Palaa etusivulle</button></center>
+    <center><div>
+      <button 
+      onclick="location.href='/'" 
+      type="button" class="btn btn-primary"  
+      style="width: 180px; height: 40px;">
+      Palaa etusivulle
+    </button>
+    
+    <div class="divider"></div>
+
+    <input
+    type="submit"
+    value="Hyväksy meno"
+    class="btn btn-success"
+    style="width: 180px; height: 40px;"
+    />
+
+  </div></center>
   </div>
-    </form>
+  </form>
 
   </body>
 </html>

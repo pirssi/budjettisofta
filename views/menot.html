@@ -63,7 +63,7 @@
         getDate();
       });
 
-      var Id = <%= userId %> ; //huutaa erroreita, mut toimii
+      var Id = <%= userId %> ; //huutaa erroreita, mut ei toimi :-D toimimattomuus ei siis johdu tästä
 
       $(function () {
         fetchBudgets();
@@ -96,6 +96,7 @@
     }
 
     </script>
+    <title>Menojen kirjaaminen</title>
   </head>
 
 <body>
@@ -113,7 +114,6 @@
     </p></center>
     <br />
     
-
     <center><p>
       Valitse pääryhmä:
       <select id="paaryhma" name="paaryhma" class="form-control">

@@ -7,45 +7,39 @@
   />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <title>Kirjautuminen</title>
 </head>
 <body>
-  <h1 align="center">Rekisteröityminen</h1>
+  <h1 align="center">Sisäänkirjautuminen</h1>
   <% if (locals.msg) { %>
   <h2><%= msg %></h2>
   <% } %>
 
   <div class="col-md-4 col-md-offset-4">
-    <form action="/register" method="POST">
+    <form action="/login" method="POST">
       <br />
       <input
         type="text"
         class="form-control"
-        id="username"
         name="username"
         placeholder="Käyttäjätunnus"
-        minlength="3"
-        maxlength="20"
         required
       />
       <br />
       <input
         type="password"
         class="form-control"
-        id="password"
         name="password"
         placeholder="Salasana"
-        minlength="4"
-        maxlength="36"
         required
       />
       <br />
       <input
         type="submit"
-        value="Rekisteröidy"
+        value="Kirjaudu sisään"
         class="btn btn-success btn-block"
       />
     </form>
   </div>
-
-  <a href="/login">Kirjaudu sisään</a>
+  <a href="/register">Rekisteröidy</a>
 </body>

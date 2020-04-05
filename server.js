@@ -17,6 +17,7 @@ const app = express();
 const hostname = "127.0.0.1";
 const port = 3001;
 
+app.engine('html', require('ejs').renderFile);
 app.use(allowCrossDomain);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,7 +31,7 @@ app.use(
 
 app.route("/").get((req, res) => {
   if (req.session.loggedIn) {
-    res.render("index.ejs", { name: req.session.username });
+    res.render("index.html", { name: req.session.username });
   } else {
     res.redirect("/login");
   }
@@ -43,7 +44,7 @@ app
     if (req.session.loggedIn) {
       res.redirect("/");
     } else {
-      res.render("login.ejs");
+      res.render("login.html");
     }
     res.end();
   })
@@ -52,7 +53,7 @@ app
 app
   .route("/register")
   .get((_req, res) => {
-    res.render("register.ejs");
+    res.render("register.html");
   })
   .post(controller.register);
 
@@ -64,9 +65,10 @@ app.route("/logout").get((req, res) => {
 
 app.route("/menot").get((req, res) => {
   if (req.session.loggedIn) {
-    res.render("menot.ejs",{
+    res.render("menot.html",{
       name: req.session.username,
-      userId: req.session.userId});
+      userId: req.session.userId,
+      budjettiId: req.session.budjettiId});   
   } else {
     res.redirect("/login");
   }
@@ -75,7 +77,7 @@ app.route("/menot").get((req, res) => {
 
 app.route("/budjetit").get((req, res) => {
   if (req.session.loggedIn) {
-    res.render("budjetit.ejs", {
+    res.render("budjetit.html", {
       name: req.session.username,
       userId: req.session.userId
     });

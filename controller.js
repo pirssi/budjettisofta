@@ -38,7 +38,7 @@ module.exports = {
         [username],
         function (error, results) {
           if (error) {
-            res.render("login.ejs", { msg: error.message });
+            res.render("login.html", { msg: error.message });
           }
 
           if (results.length > 0) {
@@ -46,23 +46,23 @@ module.exports = {
 
             bcrypt.compare(password, data.Salasana, function (error, result) {
               if (error) {
-                res.render("login.ejs", { msg: error.message });
+                res.render("login.html", { msg: error.message });
               } else if (result) {
                 req.session.loggedIn = true;
                 req.session.username = username;
                 req.session.userId = data.Id;
                 res.redirect("/");
               } else {
-                res.render("login.ejs", { msg: "Nimi tai salasana väärin!" });
+                res.render("login.html", { msg: "Nimi tai salasana väärin!" });
               }
             });
           } else {
-            res.render("login.ejs", { msg: "Nimi tai salasana väärin!" });
+            res.render("login.html", { msg: "Nimi tai salasana väärin!" });
           }
         }
       );
     } else {
-      res.render("login.ejs", { msg: "Syötä nimi ja salasana!" });
+      res.render("login.html", { msg: "Syötä nimi ja salasana!" });
       res.end();
     }
   },
@@ -73,7 +73,7 @@ module.exports = {
 
     if (username && password) {
       if (hasWhiteSpace(username) || hasWhiteSpace(password)) {
-        res.render("register.ejs", {
+        res.render("register.html", {
           msg: "Käyttäjänimi ja salasana eivät saa sisältää välilyöntejä!"
         });
       } else if (
@@ -83,7 +83,7 @@ module.exports = {
           USERNAME_MAX_LENGTH
         )
       ) {
-        res.render("register.ejs", {
+        res.render("register.html", {
           msg: `Käyttäjänimen täytyy olla pituudeltaan ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} merkkiä!`
         });
       } else if (
@@ -93,11 +93,11 @@ module.exports = {
           PASSWORD_MAX_LENGTH
         )
       ) {
-        res.render("register.ejs", {
+        res.render("register.html", {
           msg: `Käyttäjänimen täytyy olla pituudeltaan ${PASSWORD_MIN_LENGTH}-${PASSWORD_MAX_LENGTH} merkkiä!`
         });
       } else if (hasSpecialCharacters(username)) {
-        res.render("register.ejs", {
+        res.render("register.html", {
           msg: `Käyttäjänimi saa sisältää vain isoja ja pieniä kirjaimia, numeroita sekä alaviivoja (_)!`
         });
       } else {
@@ -109,11 +109,11 @@ module.exports = {
           function (error) {
             if (error) {
               if (error.code === "ER_DUP_ENTRY") {
-                res.render("register.ejs", {
+                res.render("register.html", {
                   msg: "Nimi on jo käytössä!"
                 });
               } else {
-                res.render("register.ejs", { msg: error.message });
+                res.render("register.html", { msg: error.message });
               }
             } else {
               res.statusCode = 201;
@@ -123,7 +123,7 @@ module.exports = {
         );
       }
     } else {
-      res.render("register.ejs", { msg: "Syötä nimi ja salasana!" });
+      res.render("register.html", { msg: "Syötä nimi ja salasana!" });
     }
   },
 

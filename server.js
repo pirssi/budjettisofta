@@ -50,8 +50,7 @@ app
   })
   .post(controller.login);
 
-app
-  .route("/register")
+app.route("/register")
   .get((_req, res) => {
     res.render("register.html");
   })
@@ -78,6 +77,18 @@ app.route("/menot").get((req, res) => {
 app.route("/budjetit").get((req, res) => {
   if (req.session.loggedIn) {
     res.render("budjetit.html", {
+      name: req.session.username,
+      userId: req.session.userId
+    });
+  } else {
+    res.redirect("/login");
+  }
+  res.end();
+});
+
+app.route("/lisaabudjetti").get((req, res) => {
+  if (req.session.loggedIn) {
+    res.render("lisaabudjetti.html", {
       name: req.session.username,
       userId: req.session.userId
     });

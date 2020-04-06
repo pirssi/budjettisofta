@@ -6,16 +6,22 @@
 />
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <title>Etusivu</title>
+  <style>
+    .koko {
+    width: 160px !important;
+    height: 40px;
+    }
+  </style>
 </head>
 <body>
   <h1><center>Tervetuloa <% if (locals.name) { %> <%= name %> <% } %></center></h1>
   <br />
   <br />
-<center><button onclick="location.href='/budjetit'" type="button" class="btn btn-primary">Omat budjetit</button></center>
+<center><button onclick="location.href='/budjetit'" type="button" class="btn btn-primary koko">Omat budjetit</button></center>
   <br />
   <br />
-<center><button onclick="location.href='/menot'" type="button" class="btn btn-primary">Menojen kirjaaminen</button></center>
+<center><button onclick="location.href='/menot'" type="button" class="btn btn-primary koko">Menojen kirjaaminen</button></center>
   <br />
   <br />
-<center><button onclick="location.href='/logout'" type="button" class="btn btn-danger">Kirjaudu ulos</button></center>
+<center><button onclick="location.href='/logout'" type="button" class="btn btn-danger koko">Kirjaudu ulos</button></center>
 </body>

@@ -11,9 +11,16 @@
   <link
   rel="stylesheet"
   href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-/>
+  />
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <title>budjetit</title>
+
+  <style>
+    .koko {
+    width: 160px !important;
+    height: 40px;
+    }
+  </style>
 
   <script>
     var Id = <%= userId %> ; //huutaa erroreita, mut toimii
@@ -34,7 +41,7 @@
     }
 
     function nappiesiin() {
-      var x = document.getElementById("myDIV");
+      var x = document.getElementById("muokkaa");
       var y = document.getElementById("budjetit").selectedIndex;
         if (x.style.display === "none") {
           x.style.display = "block";
@@ -48,24 +55,24 @@
   </script>
 </head>
 <body>
-  <h1><center>Tervetuloa <% if (locals.name) { %> <%= name %> <% } %></center></h1>
+  <h1><center>Omat budjetit</center></h1>
   <br />
   <br />
-  <center><label>Budjetit:<select id="budjetit" class="form-control" onchange="nappiesiin()"> </select> 
+  <center><label>Budjetit:<select id="budjetit" class="form-control koko" onchange="nappiesiin()"> </select> 
     <br/>
-    <div id="myDIV" style="display: none;">
-    <button onclick="" type="button" class="btn btn-info" id="uusiryhma" >Muokkaa budjetin ryhmiä</button></label></center>
+    <div id="muokkaa" style="display: none;">
+    <button onclick="" type="button" class="btn btn-info koko" id="uusiryhma" >Muokkaa budjettia</button></label></center>
     </div>
 
     <br />
-  <center><button onclick="location.href='/lisaabudjetti'" type="button" class="btn btn-info">Lisää uusi budjetti</button></label></center>
+  <center><button onclick="location.href='/lisaabudjetti'" type="button" class="btn btn-info koko">Lisää uusi budjetti</button></label></center>
   <br />
   <br />
-  <center><button onclick="location.href='/'" type="button" class="btn btn-primary">Etusivu</button></center>
+  <center><button onclick="location.href='/'" type="button" class="btn btn-primary koko">Etusivu</button></center>
   <br />
   <br />
-  <center><button onclick="location.href='/menot'" type="button" class="btn btn-primary">Menojen kirjaaminen</button></center>
+  <center><button onclick="location.href='/menot'" type="button" class="btn btn-primary koko">Menojen kirjaaminen</button></center>
   <br />
   <br />
-  <center><button onclick="location.href='/logout'" type="button" class="btn btn-danger">Kirjaudu ulos</button></center>
+  <center><button onclick="location.href='/logout'" type="button" class="btn btn-danger koko">Kirjaudu ulos</button></center>
 </body>

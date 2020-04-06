@@ -38,8 +38,7 @@ app.route("/").get((req, res) => {
   res.end();
 });
 
-app
-  .route("/login")
+app.route("/login")
   .get((req, res) => {
     if (req.session.loggedIn) {
       res.redirect("/");
@@ -72,7 +71,8 @@ app.route("/menot").get((req, res) => {
     res.redirect("/login");
   }
   res.end();
-});
+  })
+  //.post(controller.menot);   //jotain testailua joka ei toiminut
 
 app.route("/budjetit").get((req, res) => {
   if (req.session.loggedIn) {

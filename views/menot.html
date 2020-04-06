@@ -68,7 +68,7 @@
         getDate();
       });
 
-      var Id = <%= userId %> ; //huutaa erroreita, mut ei toimi :-D 
+      var Id = <%= userId %> ; //huutaa erroreita, mut toimii
 
       $(function () {
         fetchBudgets();
@@ -114,21 +114,22 @@
     <div class="col-md-4 col-md-offset-4">
     <center><p>
       Valitse olemassa oleva budjetti:
-      <select id="budjetit" name="valmis budjetti" class="form-control">
+      <select id="budjetit" name="budjetit" class="form-control" required>
       </select>
     </p></center>
     <br />
     
     <center><p>
       Valitse pääryhmä:
-      <select id="paaryhma" name="paaryhma" class="form-control">
+      <select id="paaryhma" name="paaryhma" class="form-control" required>
+        <option value="Pääryhmä">Pääryhmä</option>
       </select>
     </center></p>
     <br />
 
     <center><p>
       Valitse aliryhmä:
-      <select id="aliryhma" name="aliryhma" class="form-control">
+      <select id="aliryhma" name="aliryhma" class="form-control" required>
         <option value="Aliryhmä">Aliryhmä</option>
       </select>
     </center></p>
@@ -136,17 +137,20 @@
   </div>
   <div class="col-md-4 col-md-offset-4">
     <center>
-      Valitse päivämäärä: <input type="text" id="datepicker" value="tästä" class="form-control"/>
+      Valitse päivämäärä: <input type="text" id="datepicker" value="tästä" name="pvm" class="form-control" required/>
     </center></p>
     <br />
-
-    <center><p>Syötä ostopaikka: <input type="text" class="form-control" id="ostopaikka" placeholder="Ostopaikka"/></p></center>
+    
+    <center><p>Syötä tuotteen nimi: <input type="text" class="form-control" id="nimi" name="nimi" placeholder="Nimi" required/></p></center>
     <br />
 
-    <center><p>Syötä kuvaus: <input type="text" id="kuvaus" class="form-control" placeholder="Kuvaus"/></p></center>
+    <center><p>Syötä ostopaikka: <input type="text" class="form-control" id="ostopaikka" name="ostopaikka" placeholder="Ostopaikka" required/></p></center>
     <br />
 
-    <center><p>Syötä summa euroina: <input type="number" id="summa" class="form-control" placeholder="Summa"/></p></center>
+    <center><p>Syötä kuvaus: <input type="text" id="kuvaus" class="form-control"  name="kuvaus" placeholder="Kuvaus"/></p></center>
+    <br />
+
+    <center><p>Syötä summa euroina: <input type="number" id="summa" class="form-control" name="summa" placeholder="Summa" required/></p></center>
     <br />
 
     <center><div>

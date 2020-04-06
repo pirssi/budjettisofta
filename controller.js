@@ -126,7 +126,35 @@ module.exports = {
       res.render("register.html", { msg: "Syötä nimi ja salasana!" });
     }
   },
+/*                                                jotain testailua joka ei toiminut
+  menot: async function (req, res) {
+    const budjetti = req.body.budjetit;
+    const nimi = req.body.nimi;
+    const paaryhma = req.body.paaryhma;
+    const aliryhma = req.body.aliryhma;
+    const pvm = req.body.pvm;
+    const ostopaikka = req.body.ostopaikka;
+    const kuvaus = req.body.kuvaus;
+    const summa = req.body.summa;
 
+    if (budjetti!="Valitse") {
+
+        dbConnection.query(
+          "INSERT INTO hyodyke (Nimi, Pvm, Ostopaikka, Kuvaus, Summa, Aliryhma_Id) VALUES (?, ?, ?, ?, ?, ?)",
+          [nimi, pvm, ostopaikka, kuvaus, summa, aliryhma],
+          function (error) {
+            if (error) {
+                res.render("menot.html", { msg: error.message });
+            } 
+          }
+        );
+      } 
+      else
+      {
+        res.render("menot.html", { msg: "Valitse budjetti!" });
+      }
+    },
+*/
   fetchBudgets: function (req, res) {
     dbConnection.query(
       "SELECT K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = ?",

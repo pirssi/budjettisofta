@@ -7,6 +7,11 @@
     height:auto;
     display:inline-block;
     }
+    .logoutbtnPos{
+    position:fixed;
+    right:10px;
+    top:10px;
+    }
     </style>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link
@@ -63,7 +68,7 @@
         getDate();
       });
 
-      var Id = <%= userId %> ; //huutaa erroreita, mut ei toimi :-D toimimattomuus ei siis johdu tästä
+      var Id = <%= userId %> ; //huutaa erroreita, mut ei toimi :-D 
 
       $(function () {
         fetchBudgets();
@@ -164,6 +169,6 @@
   </div></center>
   </div>
   </form>
-
+  <center><button onclick="location.href='/logout'" type="button" class="btn btn-danger logoutbtnPos">Kirjaudu ulos</button></center>
   </body>
 </html>

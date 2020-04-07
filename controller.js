@@ -170,5 +170,22 @@ module.exports = {
         }
       }
     );
+  },
+
+  fetchPaaryhmat: function (req, res) {     //tästä sql lausetta pitäs muuttaa niin että hakee pääryhmät eikä budjetit
+    dbConnection.query(
+      "SELECT K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = ?",
+      [req.params.id],
+      function (error, results) {
+        if (error) {
+          console.log("Error fetching data from db, reason: " + error);
+          res.send({ code: "NOT OK", error_msg: error, data: "" });
+        } else {
+          console.log("Data = " + JSON.stringify(results));
+          res.statusCode = 200;
+          res.json(results);
+        }
+      }
+    );
   }
 };

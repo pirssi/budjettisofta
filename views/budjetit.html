@@ -25,6 +25,11 @@
     right:10px;
     top:10px;
     }
+    .divider{
+    width:40px;
+    height:auto;
+    display:inline-block;
+    }
   </style>
 
   <script>
@@ -65,9 +70,15 @@
   <br />
   <center><label>Budjetit:<select id="budjetit" class="form-control koko" onchange="nappiesiin()"> </select> 
     <br/>
+
     <div id="muokkaa" style="display: none;">
-    <button onclick="" type="button" class="btn btn-info koko" id="uusiryhma" >Muokkaa budjettia</button></label></center>
-    </div>
+      <button onclick="" type="button" class="btn btn-info koko" id="muokkaabtn" >Muokkaa budjettia</button></label>
+    
+    <div class="divider"></div>
+
+     <button onclick="" type="button" class="btn btn-info koko" id="jaa" >Jaa budjetti</button></label>
+
+    </div></center>
 
     <br />
   <center><button onclick="location.href='/lisaabudjetti'" type="button" class="btn btn-info koko">Lisää uusi budjetti</button></label></center>

@@ -61,6 +61,15 @@
     right:10px;
     top:10px;
     }
+    .koko {
+    width: 171px !important;
+    height: 45px;
+    }
+    .divider{
+    width:40px;
+    height:auto;
+    display:inline-block;
+    }
   </style>
 </head>
 <body>
@@ -77,17 +86,33 @@
       <center>Valitse budjetin päivämäärä: <input type="text" id="datepicker" value="tästä" class="form-control"/></center>
       <br/>
       <br/>
-      <center><input
+      
+      
+      
+
+      <center><div>
+       
+      
+
+      <button onclick="location.href='/'" type="button" class="btn btn-primary koko" >Etusivu</button>
+      
+        <div class="divider"></div>
+  
+      <button onclick="location.href='/budjetit'" type="button" class="btn btn-primary koko" >Budjetit</button>
+
+      <div class="divider"></div>
+
+      <input
       type="submit"
       value="Lisää budjetti"
-      class="btn btn-success"
-      style="width: 180px; height: 40px;"
-      /></center>
-      <br/>
-      <br/>
-      <center><button onclick="location.href='/'" type="button" class="btn btn-primary">Etusivu</button></center>
-      <center><button onclick="location.href='/budjetit'" type="button" class="btn btn-primary">Budjetit</button></center>
-      <center><button onclick="location.href='/logout'" type="button" class="btn btn-danger logoutbtnPos">Kirjaudu ulos</button></center>
+      class="btn btn-success koko"
+      />
+
+      <button onclick="location.href='/logout'" type="button" class="btn btn-danger logoutbtnPos">Kirjaudu ulos</button>
+  
+    </div></center>
+
+
     </div>
     </div>
   </form>

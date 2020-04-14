@@ -65,14 +65,13 @@ app.route("/menot").get((req, res) => {
   if (req.session.loggedIn) {
     res.render("menot.html",{
       name: req.session.username,
-      userId: req.session.userId,
-      budjettiId: req.session.budjettiId});   
+      userId: req.session.userId});   
   } else {
     res.redirect("/login");
   }
   res.end();
   })
-  //.post(controller.menot);   //jotain testailua joka ei toiminut
+  .post(controller.syotameno); 
 
 app.route("/budjetit").get((req, res) => {
   if (req.session.loggedIn) {

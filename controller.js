@@ -126,8 +126,8 @@ module.exports = {
       res.render("register.html", { msg: "Syötä nimi ja salasana!" });
     }
   },
-/*                                                jotain testailua joka ei toiminut
-  menot: async function (req, res) {
+
+  syotameno: async function (req, res) {
     const budjetti = req.body.budjetit;
     const nimi = req.body.nimi;
     const paaryhma = req.body.paaryhma;
@@ -140,12 +140,22 @@ module.exports = {
     if (budjetti!="Valitse") {
 
         dbConnection.query(
-          "INSERT INTO hyodyke (Nimi, Pvm, Ostopaikka, Kuvaus, Summa, Aliryhma_Id) VALUES (?, ?, ?, ?, ?, ?)",
+          "INSERT INTO hyodyke (Nimi, Pvm, Ostospaikka, Kuvaus, Summa, Aliryhma_Id) VALUES (?, ?, ?, ?, ?, ?)",
           [nimi, pvm, ostopaikka, kuvaus, summa, aliryhma],
           function (error) {
             if (error) {
-                res.render("menot.html", { msg: error.message });
+                res.render("menot.html", {
+                  msg: error.message,
+                  name: req.session.username,
+                  userId: req.session.userId
+                });
             } 
+            else{
+              res.render("menot.html",{
+                msg: "Meno lisätty!",
+                name: req.session.username,
+                userId: req.session.userId});  
+            }
           }
         );
       } 
@@ -154,7 +164,7 @@ module.exports = {
         res.render("menot.html", { msg: "Valitse budjetti!" });
       }
     },
-*/
+
   fetchBudgets: function (req, res) {
     dbConnection.query(
       "SELECT K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = ?",

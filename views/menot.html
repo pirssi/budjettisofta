@@ -104,14 +104,22 @@
     <title>Menojen kirjaaminen</title>
   </head>
 
-<body>
+<body >
     <header>
       <h1><center>Menojen kirjaaminen</center></h1>
     </header>
     <br />
     <br />
   <form action="/menot" method="POST" >
-    <div class="col-md-4 col-md-offset-4">
+    <div >
+    <div class="col-md-4 col-md-offset-4" 
+    style="background-color:rgb(135, 165, 204); border-style:inherit; 
+    padding-top: 25px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    padding-left: 30px;
+    border-radius: 25px;"
+    >
     <center><p>
       Valitse budjetti:
       <select id="budjetit" name="budjetit" class="form-control" required>
@@ -133,8 +141,6 @@
       </select>
     </center></p>
     <br />
-  </div>
-  <div class="col-md-4 col-md-offset-4">
     <center>
       Valitse päivämäärä: <input type="text" id="datepicker" value="tästä" name="pvm" class="form-control" required/>
     </center></p>
@@ -149,7 +155,7 @@
     <center><p>Syötä kuvaus: <input type="text" id="kuvaus" class="form-control"  name="kuvaus" placeholder="Kuvaus"/></p></center>
     <br />
 
-    <center><p>Syötä summa euroina: <input type="number" id="summa" class="form-control" name="summa" placeholder="Summa" required/></p></center>
+    <center><p>Syötä summa euroina: <input type="number" step="0.01" id="summa" class="form-control" name="summa" placeholder="Summa" required/></p></center>
     <br />
 
     <center><div>

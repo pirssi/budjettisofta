@@ -158,6 +158,32 @@ module.exports = {
         );
     },
 
+    lisaabudjetti: async function (req, res) {    //tähän tarviaa jotenkin lisätä että yhdistää käyttäjän lisättyyn budjettiin
+      const nimi = req.body.nimi;
+      const koko = req.body.koko;
+      const pvm = req.body.pvm;
+  
+          dbConnection.query(
+            "INSERT INTO budjetti (Nimi, Koko, Pvm) VALUES (?, ?, ?)",
+            [nimi, koko, pvm],
+            function (error) {
+              if (error) {
+                  res.render("lisaabudjetti.html", {
+                    msg: error.message,
+                    name: req.session.username,
+                    userId: req.session.userId
+                  });
+              } 
+              else{
+                res.render("lisaabudjetti.html",{
+                  msg: "Budjetti lisätty!",
+                  name: req.session.username,
+                  userId: req.session.userId});  
+              }
+            }
+          );
+      },
+
   fetchBudgets: function (req, res) {
     dbConnection.query(
       "SELECT K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = ?",

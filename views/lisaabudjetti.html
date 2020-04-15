@@ -15,7 +15,7 @@
      $(function() {
         $("#datepicker")
           .datepicker({
-            dateFormat: "dd.mm.yy",
+            dateFormat: "yy.mm.dd",
             defaultDate: new Date(),
             monthNames: [
               "Tammikuu",
@@ -48,7 +48,7 @@
             month = "0" + month;
           }
           var year = todaydate.getFullYear();
-          var datestring = day + "." + month + "." + year;
+          var datestring = year + "." + month + "." + day;
           document.getElementById("datepicker").value = datestring;
         }
         getDate();
@@ -88,11 +88,35 @@
     padding-left: 20px;
     border-radius: 25px;" >
 
-      <center><p>Syötä budjetin nimi: <input type="text" class="form-control" id="budjetinnimi" placeholder="Budjetin nimi"/></p></center>
+      <center><p>Syötä budjetin nimi: 
+        <input type="text" 
+        class="form-control" 
+        id="nimi" 
+        name="nimi"
+        placeholder="Budjetin nimi"
+        required/>
+      </p></center>
       <br/>
-      <center><p>Syötä budjetin koko: <input type="number"  class="form-control" placeholder="Budjetin koko"/></p></center>
+      <center><p>Syötä budjetin koko: 
+        <input type="number"  
+        step="0.01" 
+        class="form-control" 
+        id="koko"
+        name="koko"
+        placeholder="Budjetin koko"
+        maxlength = "12" 
+        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+        required/>
+      </p></center>
       <br/>
-      <center><p>Valitse budjetin päivämäärä: <input type="text" id="datepicker" value="tästä" class="form-control"/></center>
+      <center><p>Valitse budjetin päivämäärä: 
+        <input type="text" 
+        id="datepicker" 
+        name="pvm"
+        value="tästä" 
+        class="form-control"
+        required/>
+      </center>
       <br/>
       <br/>
       

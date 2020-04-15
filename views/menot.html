@@ -29,7 +29,7 @@
       $(function() {
         $("#datepicker")
           .datepicker({
-            dateFormat: "dd.mm.yy",
+            dateFormat: "yy.mm.dd",
             defaultDate: new Date(),
             monthNames: [
               "Tammikuu",
@@ -62,7 +62,7 @@
             month = "0" + month;
           }
           var year = todaydate.getFullYear();
-          var datestring = day + "." + month + "." + year;
+          var datestring = year + "." + month + "." + day;
           document.getElementById("datepicker").value = datestring;
         }
         getDate();

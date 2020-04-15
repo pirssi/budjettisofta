@@ -95,7 +95,8 @@ app.route("/lisaabudjetti").get((req, res) => {
     res.redirect("/login");
   }
   res.end();
-});
+})
+.post(controller.lisaabudjetti);
 
 app.route("/kayttajanbudjetit/:id").get(controller.fetchBudgets);
 app.route("/paaryhma/:id").get(controller.fetchPaaryhmat);

@@ -137,8 +137,6 @@ module.exports = {
     const kuvaus = req.body.kuvaus;
     const summa = req.body.summa;
 
-    if (budjetti!="Valitse") {
-
         dbConnection.query(
           "INSERT INTO hyodyke (Nimi, Pvm, Ostospaikka, Kuvaus, Summa, Aliryhma_Id) VALUES (?, ?, ?, ?, ?, ?)",
           [nimi, pvm, ostopaikka, kuvaus, summa, aliryhma],
@@ -158,11 +156,6 @@ module.exports = {
             }
           }
         );
-      } 
-      else
-      {
-        res.render("menot.html", { msg: "Valitse budjetti!" });
-      }
     },
 
   fetchBudgets: function (req, res) {

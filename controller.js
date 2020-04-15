@@ -162,10 +162,47 @@ module.exports = {
       const nimi = req.body.nimi;
       const koko = req.body.koko;
       const pvm = req.body.pvm;
+      var budjettiId;
   
-          dbConnection.query(
+          dbConnection.query(         //budjetin lisääminen
             "INSERT INTO budjetti (Nimi, Koko, Pvm) VALUES (?, ?, ?)",
             [nimi, koko, pvm],
+            function (error) {
+              if (error) {
+                  res.render("lisaabudjetti.html", {
+                    msg: error.message,
+                    name: req.session.username,
+                    userId: req.session.userId
+                  });
+              } 
+              else{
+                res.render("lisaabudjetti.html",{
+                  msg: "Budjetti lisätty!",
+                  name: req.session.username,
+                  userId: req.session.userId});  
+              }
+            }
+          );
+          dbConnection.query(           //haetaan budjetin id kannasta, tähän pitää lisätä haetun datan syöttö budjettiId muuttujaan
+            "SELECT Id FROM budjetti WHERE Nimi = ?",
+            [nimi],
+            function (error, results) {
+              if (error) {
+                console.log("Error fetching data from db, reason: " + error);
+                res.render("lisaabudjetti.html", { msg: error.message });
+              }
+    
+              else if (results){
+                res.render("lisaabudjetti.html",{
+                  msg: "Budjetti lisätty!",
+                  name: req.session.username,
+                  userId: req.session.userId}); 
+              }
+            }
+          );
+          dbConnection.query(         //yhdistetään käyttäjä budjettiin
+            "INSERT INTO kayttajanbudjetit (Kayttaja_Id, Budjetti_Id) VALUES (?, ?)",
+            [userId, budjettiId],
             function (error) {
               if (error) {
                   res.render("lisaabudjetti.html", {

@@ -7,7 +7,7 @@ const dbConnection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "root",
-  database: "budjetti"
+  database: "budjetti",
 });
 
 const USERNAME_MIN_LENGTH = 3;
@@ -74,7 +74,7 @@ module.exports = {
     if (username && password) {
       if (hasWhiteSpace(username) || hasWhiteSpace(password)) {
         res.render("register.html", {
-          msg: "Käyttäjänimi ja salasana eivät saa sisältää välilyöntejä!"
+          msg: "Käyttäjänimi ja salasana eivät saa sisältää välilyöntejä!",
         });
       } else if (
         !isBetweenMinAndMaxLength(
@@ -84,7 +84,7 @@ module.exports = {
         )
       ) {
         res.render("register.html", {
-          msg: `Käyttäjänimen täytyy olla pituudeltaan ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} merkkiä!`
+          msg: `Käyttäjänimen täytyy olla pituudeltaan ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} merkkiä!`,
         });
       } else if (
         !isBetweenMinAndMaxLength(
@@ -94,11 +94,11 @@ module.exports = {
         )
       ) {
         res.render("register.html", {
-          msg: `Käyttäjänimen täytyy olla pituudeltaan ${PASSWORD_MIN_LENGTH}-${PASSWORD_MAX_LENGTH} merkkiä!`
+          msg: `Käyttäjänimen täytyy olla pituudeltaan ${PASSWORD_MIN_LENGTH}-${PASSWORD_MAX_LENGTH} merkkiä!`,
         });
       } else if (hasSpecialCharacters(username)) {
         res.render("register.html", {
-          msg: `Käyttäjänimi saa sisältää vain isoja ja pieniä kirjaimia, numeroita sekä alaviivoja (_)!`
+          msg: `Käyttäjänimi saa sisältää vain isoja ja pieniä kirjaimia, numeroita sekä alaviivoja (_)!`,
         });
       } else {
         const passwordHash = await bcrypt.hash(password, 10);
@@ -110,7 +110,7 @@ module.exports = {
             if (error) {
               if (error.code === "ER_DUP_ENTRY") {
                 res.render("register.html", {
-                  msg: "Nimi on jo käytössä!"
+                  msg: "Nimi on jo käytössä!",
                 });
               } else {
                 res.render("register.html", { msg: error.message });
@@ -137,102 +137,105 @@ module.exports = {
     const kuvaus = req.body.kuvaus;
     const summa = req.body.summa;
 
-        dbConnection.query(
-          "INSERT INTO hyodyke (Nimi, Pvm, Ostospaikka, Kuvaus, Summa, Aliryhma_Id) VALUES (?, ?, ?, ?, ?, ?)",
-          [nimi, pvm, ostopaikka, kuvaus, summa, aliryhma],
-          function (error) {
-            if (error) {
-                res.render("menot.html", {
-                  msg: error.message,
-                  name: req.session.username,
-                  userId: req.session.userId
-                });
-            } 
-            else{
-              res.render("menot.html",{
-                msg: "Meno lisätty!",
-                name: req.session.username,
-                userId: req.session.userId});  
-            }
-          }
-        );
-    },
+    dbConnection.query(
+      "INSERT INTO hyodyke (Nimi, Pvm, Ostospaikka, Kuvaus, Summa, Aliryhma_Id) VALUES (?, ?, ?, ?, ?, ?)",
+      [nimi, pvm, ostopaikka, kuvaus, summa, aliryhma],
+      function (error) {
+        if (error) {
+          res.render("menot.html", {
+            msg: error.message,
+            name: req.session.username,
+            userId: req.session.userId,
+          });
+        } else {
+          res.render("menot.html", {
+            msg: "Meno lisätty!",
+            name: req.session.username,
+            userId: req.session.userId,
+          });
+        }
+      }
+    );
+  },
 
-    lisaabudjetti: async function (req, res) {    //tähän tarviaa jotenkin lisätä että yhdistää käyttäjän lisättyyn budjettiin
-      const nimi = req.body.nimi;
-      const koko = req.body.koko;
-      const pvm = req.body.pvm;
-      const kayttajaId = req.session.userId;
-      var budjettiId;
+  lisaabudjetti: async function (req, res) {
+    //tähän tarviaa jotenkin lisätä että yhdistää käyttäjän lisättyyn budjettiin
+    const nimi = req.body.nimi;
+    const koko = req.body.koko;
+    const pvm = req.body.pvm;
+    const kayttajaId = req.session.userId;
+    var budjettiId;
 
-          dbConnection.query(         //budjetin lisääminen
-            "INSERT INTO budjetti (Nimi, Koko, Pvm) VALUES (?, ?, ?)",
-            [nimi, koko, pvm],
-            function (error) {
-              if (error) {
-                  res.render("lisaabudjetti.html", {
-                    msg: error.message,
-                    name: req.session.username,
-                    userId: req.session.userId
-                  });
-              } 
-              else
-              {
-              
-              }
-            }
-          );
+    dbConnection.query(
+      //budjetin lisääminen
+      "INSERT INTO budjetti (Nimi, Koko, Pvm) VALUES (?, ?, ?)",
+      [nimi, koko, pvm],
+      function (error, results) {
+        if (error) {
+          res.render("lisaabudjetti.html", {
+            msg: error.message,
+            name: req.session.username,
+            userId: req.session.userId,
+          });
+        } else if (results) {
+          console.log("lisätty id: " + results.insertId);
+          budjettiId = results.insertId;
 
-          dbConnection.query(           //haetaan budjetin id kannasta, tähän pitää lisätä haetun datan syöttö budjettiId muuttujaan
-            "SELECT Id FROM budjetti WHERE Nimi = ?",
-            [nimi],
-            function (error, results) {
-              if (error) {
-                console.log("Error fetching data from db, reason: " + error);
-                res.render("lisaabudjetti.html", { 
-                  msg: error.message,
-                  name: req.session.username,
-                  userId: req.session.userId
-                });
-              }
-    
-              else if (results)
-              {
-                console.log("Data = " + JSON.stringify(results));
-                budjettiId= results[0];  
-                console.log("budjettiId = " + JSON.stringify(budjettiId))
-                console.log("kayttajaId = " + JSON.stringify(kayttajaId))
-                budjettiId = JSON.stringify(budjettiId);
-                budjettiId = budjettiId.replace(/\D/g,'');
-              }
-            }
-          );
-          
-          dbConnection.query(         //yhdistetään käyttäjä budjettiin
-            
+          dbConnection.query(
+            //yhdistetään käyttäjä budjettiin
+
             "INSERT INTO kayttajanbudjetit (Kayttaja_Id, Budjetti_Id) VALUES (?, ?)",
             [kayttajaId, budjettiId],
             function (error) {
               if (error) {
-                console.log(budjettiId +" " + kayttajaId+ " budjettiId ja kayttajaId");
+                console.log(
+                  budjettiId + " " + kayttajaId + " budjettiId ja kayttajaId"
+                );
                 console.log("yhdistäminen ei onnistunut " + error);
-                console.log(budjettiId +" " + kayttajaId+ " budjettiId ja kayttajaId");
-                  res.render("lisaabudjetti.html", {
-                    msg: error.message,
-                    name: req.session.username,
-                    userId: req.session.userId
-                  });
-              } 
-              else{
+                console.log(
+                  budjettiId + " " + kayttajaId + " budjettiId ja kayttajaId"
+                );
+                res.render("lisaabudjetti.html", {
+                  msg: error.message,
+                  name: req.session.username,
+                  userId: req.session.userId,
+                });
+              } else {
                 console.log("yhdistäminen onnistui");
-                res.render("lisaabudjetti.html",{
+                res.render("lisaabudjetti.html", {
                   msg: "Budjetti lisätty!",
                   name: req.session.username,
-                  userId: req.session.userId});  
+                  userId: req.session.userId,
+                });
               }
             }
           );
-      },
+        }
+      }
+    );
+
+    /*dbConnection.query(
+      //haetaan budjetin id kannasta, tähän pitää lisätä haetun datan syöttö budjettiId muuttujaan
+      "SELECT Id FROM budjetti WHERE Nimi = ?",
+      [nimi],
+      function (error, results) {
+        if (error) {
+          console.log("Error fetching data from db, reason: " + error);
+          res.render("lisaabudjetti.html", {
+            msg: error.message,
+            name: req.session.username,
+            userId: req.session.userId,
+          });
+        } else if (results) {
+          console.log("Data = " + JSON.stringify(results));
+          budjettiId = results[0].Id;
+          console.log("results.id=" + results[0].Id);
+
+          
+        }
+      }
+    );*/
+  },
 
   fetchBudgets: function (req, res) {
     dbConnection.query(
@@ -251,7 +254,8 @@ module.exports = {
     );
   },
 
-  fetchPaaryhmat: function (req, res) {     //tästä sql lausetta pitäs muuttaa niin että hakee pääryhmät eikä budjetit
+  fetchPaaryhmat: function (req, res) {
+    //tästä sql lausetta pitäs muuttaa niin että hakee pääryhmät eikä budjetit
     dbConnection.query(
       "SELECT K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = ?",
       [req.params.id],
@@ -266,5 +270,5 @@ module.exports = {
         }
       }
     );
-  }
+  },
 };

@@ -162,8 +162,9 @@ module.exports = {
       const nimi = req.body.nimi;
       const koko = req.body.koko;
       const pvm = req.body.pvm;
+      const kayttajaId = req.session.userId;
       var budjettiId;
-  
+
           dbConnection.query(         //budjetin lisääminen
             "INSERT INTO budjetti (Nimi, Koko, Pvm) VALUES (?, ?, ?)",
             [nimi, koko, pvm],
@@ -175,36 +176,47 @@ module.exports = {
                     userId: req.session.userId
                   });
               } 
-              else{
-                res.render("lisaabudjetti.html",{
-                  msg: "Budjetti lisätty!",
-                  name: req.session.username,
-                  userId: req.session.userId});  
+              else
+              {
+              
               }
             }
           );
+
           dbConnection.query(           //haetaan budjetin id kannasta, tähän pitää lisätä haetun datan syöttö budjettiId muuttujaan
             "SELECT Id FROM budjetti WHERE Nimi = ?",
             [nimi],
             function (error, results) {
               if (error) {
                 console.log("Error fetching data from db, reason: " + error);
-                res.render("lisaabudjetti.html", { msg: error.message });
+                res.render("lisaabudjetti.html", { 
+                  msg: error.message,
+                  name: req.session.username,
+                  userId: req.session.userId
+                });
               }
     
-              else if (results){
-                res.render("lisaabudjetti.html",{
-                  msg: "Budjetti lisätty!",
-                  name: req.session.username,
-                  userId: req.session.userId}); 
+              else if (results)
+              {
+                console.log("Data = " + JSON.stringify(results));
+                budjettiId= results[0];  
+                console.log("budjettiId = " + JSON.stringify(budjettiId))
+                console.log("kayttajaId = " + JSON.stringify(kayttajaId))
+                budjettiId = JSON.stringify(budjettiId);
+                budjettiId = budjettiId.replace(/\D/g,'');
               }
             }
           );
+          
           dbConnection.query(         //yhdistetään käyttäjä budjettiin
+            
             "INSERT INTO kayttajanbudjetit (Kayttaja_Id, Budjetti_Id) VALUES (?, ?)",
-            [userId, budjettiId],
+            [kayttajaId, budjettiId],
             function (error) {
               if (error) {
+                console.log(budjettiId +" " + kayttajaId+ " budjettiId ja kayttajaId");
+                console.log("yhdistäminen ei onnistunut " + error);
+                console.log(budjettiId +" " + kayttajaId+ " budjettiId ja kayttajaId");
                   res.render("lisaabudjetti.html", {
                     msg: error.message,
                     name: req.session.username,
@@ -212,6 +224,7 @@ module.exports = {
                   });
               } 
               else{
+                console.log("yhdistäminen onnistui");
                 res.render("lisaabudjetti.html",{
                   msg: "Budjetti lisätty!",
                   name: req.session.username,

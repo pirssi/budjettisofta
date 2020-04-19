@@ -69,6 +69,7 @@
       });
 
       var Id = <%= userId %> ; //huutaa erroreita, mut toimii
+      var bId;
 
       $(function () {
         fetchBudgets();
@@ -86,12 +87,12 @@
     }
 
     $(function () {
-        fetchPaaryhmat();             //hakee budjetit atm
+        fetchPaaryhmat();             //ei saa dataa koska id ei toimi
     });
 
     function fetchPaaryhmat() {
         $.get(
-            "/paaryhma/" + Id,
+            "/paaryhma/" + bId,
             function (data, status, xhr) {
                 $("#paaryhma").append('<option value="-1">Valitse</option>');
                 $.each(data, function (index, data) {

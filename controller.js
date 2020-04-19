@@ -188,13 +188,9 @@ module.exports = {
             [kayttajaId, budjettiId],
             function (error) {
               if (error) {
-                console.log(
-                  budjettiId + " " + kayttajaId + " budjettiId ja kayttajaId"
-                );
+                console.log(budjettiId + " " + kayttajaId + " budjettiId ja kayttajaId");
                 console.log("yhdistäminen ei onnistunut " + error);
-                console.log(
-                  budjettiId + " " + kayttajaId + " budjettiId ja kayttajaId"
-                );
+                
                 res.render("lisaabudjetti.html", {
                   msg: error.message,
                   name: req.session.username,
@@ -213,28 +209,6 @@ module.exports = {
         }
       }
     );
-
-    /*dbConnection.query(
-      //haetaan budjetin id kannasta, tähän pitää lisätä haetun datan syöttö budjettiId muuttujaan
-      "SELECT Id FROM budjetti WHERE Nimi = ?",
-      [nimi],
-      function (error, results) {
-        if (error) {
-          console.log("Error fetching data from db, reason: " + error);
-          res.render("lisaabudjetti.html", {
-            msg: error.message,
-            name: req.session.username,
-            userId: req.session.userId,
-          });
-        } else if (results) {
-          console.log("Data = " + JSON.stringify(results));
-          budjettiId = results[0].Id;
-          console.log("results.id=" + results[0].Id);
-
-          
-        }
-      }
-    );*/
   },
 
   fetchBudgets: function (req, res) {
@@ -255,9 +229,9 @@ module.exports = {
   },
 
   fetchPaaryhmat: function (req, res) {
-    //tästä sql lausetta pitäs muuttaa niin että hakee pääryhmät eikä budjetit
+    //tää on ehkä oikein mutta menot sivun fetchPaaryhmat tarviaa päivitystä
     dbConnection.query(
-      "SELECT K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = ?",
+      "SELECT Id, Nimi FROM paaryhma WHERE Budjetti_Id = ?",
       [req.params.id],
       function (error, results) {
         if (error) {

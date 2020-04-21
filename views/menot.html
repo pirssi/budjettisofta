@@ -1,242 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <style>
-      .divider{
-    width:40px;
-    height:auto;
-    display:inline-block;
+
+<head>
+  <style>
+    .divider {
+      width: 40px;
+      height: auto;
+      display: inline-block;
     }
-    .logoutbtnPos{
-    position:fixed;
-    right:10px;
-    top:10px;
+
+    .logoutbtnPos {
+      position: fixed;
+      right: 10px;
+      top: 10px;
     }
-    </style>
+  </style>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link
-    rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-  />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-      $(function() {
-        $("#datepicker")
-          .datepicker({
-            dateFormat: "yy.mm.dd",
-            defaultDate: new Date(),
-            monthNames: [
-              "Tammikuu",
-              "Helmikuu",
-              "Maaliskuu",
-              "Huhtikuu",
-              "Toukokuu",
-              "Kesäkuu",
-              "Heinäkuu",
-              "Elokuu",
-              "Syyskuu",
-              "Lokakuu",
-              "Marraskuu",
-              "Joulukuu"
-            ],
-            dayNamesMin: ["Su", "Ma", "Ti", "Ke", "To", "Pe", "La"],
-            firstDay: 1,
-            altField: "#pelement"
-          })
-          .val();
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+    $(function () {
+      $("#datepicker")
+        .datepicker({
+          dateFormat: "yy.mm.dd",
+          defaultDate: new Date(),
+          monthNames: [
+            "Tammikuu",
+            "Helmikuu",
+            "Maaliskuu",
+            "Huhtikuu",
+            "Toukokuu",
+            "Kesäkuu",
+            "Heinäkuu",
+            "Elokuu",
+            "Syyskuu",
+            "Lokakuu",
+            "Marraskuu",
+            "Joulukuu"
+          ],
+          dayNamesMin: ["Su", "Ma", "Ti", "Ke", "To", "Pe", "La"],
+          firstDay: 1,
+          altField: "#pelement"
+        })
+        .val();
 
-        function getDate() {
-          var todaydate = new Date();
-          var day = todaydate.getDate();
-          if (day < 10) {
-            day = "0" + day;
-          }
-          var month = todaydate.getMonth() + 1;
-          if (month < 10) {
-            month = "0" + month;
-          }
-          var year = todaydate.getFullYear();
-          var datestring = year + "." + month + "." + day;
-          document.getElementById("datepicker").value = datestring;
+      function getDate() {
+        var todaydate = new Date();
+        var day = todaydate.getDate();
+        if (day < 10) {
+          day = "0" + day;
         }
-        getDate();
-      });
-
-      var Id = <%= userId %> ; //huutaa erroreita, mut toimii
-      var bId;
-
-      $(function () {
-        fetchBudgets();
+        var month = todaydate.getMonth() + 1;
+        if (month < 10) {
+          month = "0" + month;
+        }
+        var year = todaydate.getFullYear();
+        var datestring = year + "." + month + "." + day;
+        document.getElementById("datepicker").value = datestring;
+      }
+      getDate();
     });
 
-    function fetchBudgets() {
-        $.get(
-            "/kayttajanbudjetit/" + Id,
-            function (data, status, xhr) {
-                $("#budjetit").append('<option value="-1">Valitse</option>');
-                $.each(data, function (index, data) {
-                    $("#budjetit").append('<option value="' + data.Id + '">' + data.NIMI + "</option>");
-                });
-            })
-    }
+    var userId = <%= userId %> ; //huutaa erroreita, mut toimii
+    var budgetId;
+    var paaId;
+    var aliId;
 
     $(function () {
-        fetchPaaryhmat();             //ei saa dataa koska id ei toimi
+      fetchBudgets();
+      $("#paaryhmat").append('<option value="-1">Valitse</option>');
+      $("#aliryhmat").append('<option value="-1">Valitse</option>');
     });
 
-    function fetchPaaryhmat() {
-        $.get(
-            "/paaryhma/" + bId,
-            function (data, status, xhr) {
-                $("#paaryhma").append('<option value="-1">Valitse</option>');
-                $.each(data, function (index, data) {
-                    $("#paaryhma").append('<option value="' + data.Id + '">' + data.NIMI + "</option>");
-                });
-            })
+    function selectBudget() {
+      budgetId = $("#budjetit :selected").val();
+      fetchPaaryhmat();
     }
 
+    function selectPaaryhma() {
+      paaId = $("#paaryhmat :selected").val();
+      fetchAliryhmat();
+    }
 
-    </script>
-    <title>Menojen kirjaaminen</title>
-  </head>
+    function selectAliryhma() {
+      aliId = $("#aliryhmat :selected").val();
+    }
 
-<body >
-    <header>
-      <h1><center>Menojen kirjaaminen</center></h1>
-    </header>
-    <br />
-    <br />
-  <form action="/menot" method="POST" >
-    <div >
-    <div class="col-md-4 col-md-offset-4" 
-    style="background-color:rgb(135, 165, 204); border-style:inherit; 
+    function fetchBudgets() {
+      $.get(
+        "/kayttajanbudjetit/" + userId,
+        function (data, status, xhr) {
+          $("#budjetit").append('<option value="-1">Valitse</option>');
+          $.each(data, function (index, data) {
+            $("#budjetit").append('<option value="' + data.Id + '">' + data.NIMI + "</option>");
+          });
+        })
+    }
+
+    function fetchPaaryhmat() {
+      $("#paaryhmat").empty();
+      $("#aliryhmat").empty();
+      $("#aliryhmat").append('<option value="-1">Valitse</option>');
+      $.get(
+        "/paaryhma/" + budgetId,
+        function (data, status, xhr) {
+          $("#paaryhmat").append('<option value="-1">Valitse</option>');
+          $.each(data, function (index, data) {
+            $("#paaryhmat").append('<option value="' + data.Id + '">' + data.Nimi + "</option>");
+          });
+        })
+    }
+
+    function fetchAliryhmat() {
+      $("#aliryhmat").empty();
+      $.get(
+        "/aliryhma/" + paaId,
+        function (data, status, xhr) {
+          $("#aliryhmat").append('<option value="-1">Valitse</option>');
+          $.each(data, function (index, data) {
+            $("#aliryhmat").append('<option value="' + data.Id + '">' + data.Nimi + "</option>");
+          });
+        })
+    }
+
+  </script>
+  <title>Menojen kirjaaminen</title>
+</head>
+
+<body>
+  <header>
+    <h1>
+      <center>Menojen kirjaaminen</center>
+    </h1>
+  </header>
+  <br />
+  <br />
+  <form action="/menot" method="POST">
+    <div>
+      <div class="col-md-4 col-md-offset-4" style="background-color:rgb(135, 165, 204); border-style:inherit; 
     padding-top: 25px;
     padding-right: 30px;
     padding-bottom: 30px;
     padding-left: 30px;
-    border-radius: 25px;"
-    >
-    <center><p>
-      Valitse budjetti:
-      <select id="budjetit" 
-      name="budjetit" 
-      class="form-control" 
-      required>
-      </select>
-    </p></center>
-    <br />
-    
-    <center><p>
-      Valitse pääryhmä:
-      <select id="paaryhma" 
-      name="paaryhma" 
-      class="form-control" 
-      required>
-      </select>
-    </center></p>
-    <br />
+    border-radius: 25px;">
+        <center>
+          <p>
+            Valitse budjetti:
+            <select onchange="selectBudget()" id="budjetit" name="budjetit" class="form-control" required>
+            </select>
+          </p>
+        </center>
+        <br />
 
-    <center><p>
-      Valitse aliryhmä:
-      <select id="aliryhma" 
-      name="aliryhma" 
-      class="form-control" 
-      required>
-        <option value="1">1</option>
-      </select>
-    </center></p>
-    <br />
-    <center>
-      <p>Valitse päivämäärä: 
-        <input type="text" 
-        id="datepicker" 
-        value="tästä" 
-        name="pvm" 
-        class="form-control" 
-        required/>
-    </center></p>
-    <br />
-    
-    
-    <center><p>Syötä tuotteen nimi: 
-      <input type="text" 
-      class="form-control" 
-      id="nimi"  
-      name="nimi" 
-      minlength="3"
-      maxlength="45"
-      placeholder="Nimi"
-      required/>
-    </p></center>
-    <br />
+        <center>
+          <p>
+            Valitse pääryhmä:
+            <select onchange="selectPaaryhma()" id="paaryhmat" name="paaryhma" class="form-control" required>
+            </select>
+        </center>
+        </p>
+        <br />
 
-    <center><p>Syötä ostopaikka: 
-      <input type="text" 
-      class="form-control" 
-      id="ostopaikka" 
-      name="ostopaikka" 
-      minlength="3" 
-      maxlength="45" 
-      placeholder="Ostopaikka" 
-      required/>
-    </p></center>
-    <br />
+        <center>
+          <p>
+            Valitse aliryhmä:
+            <select onchange="selectAliryhma()" id="aliryhmat" name="aliryhma" class="form-control" required>
+            </select>
+        </center>
+        </p>
+        <br />
+        <center>
+          <p>Valitse päivämäärä:
+            <input type="text" id="datepicker" value="tästä" name="pvm" class="form-control" required />
+        </center>
+        </p>
+        <br />
 
-    <center><p>Syötä kuvaus: 
-      <input type="text" 
-      id="kuvaus" 
-      class="form-control"  
-      name="kuvaus"
-      maxlength="45" 
-      placeholder="Kuvaus"/>
-    </p></center>
-    <br />
 
-    <center><p>Syötä summa euroina: 
-      <input type="number" 
-      step="0.01" 
-      id="summa" 
-      class="form-control" 
-      oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-      type = "number"
-      maxlength = "10" 
-      name="summa" 
-      placeholder="Summa" 
-      required/>
-    </p></center>
-    <br />
+        <center>
+          <p>Syötä tuotteen nimi:
+            <input type="text" class="form-control" id="nimi" name="nimi" minlength="3" maxlength="45"
+              placeholder="Nimi" required />
+          </p>
+        </center>
+        <br />
 
-    <center><div>
-      <button 
-      onclick="location.href='/'" 
-      type="button" class="btn btn-primary"  
-      style="width: 180px; height: 40px;">
-      Palaa etusivulle
-    </button>
-    
-    <div class="divider"></div>
+        <center>
+          <p>Syötä ostopaikka:
+            <input type="text" class="form-control" id="ostopaikka" name="ostopaikka" minlength="3" maxlength="45"
+              placeholder="Ostopaikka" required />
+          </p>
+        </center>
+        <br />
 
-    <input
-    type="submit"
-    value="Hyväksy meno"
-    class="btn btn-success"
-    style="width: 180px; height: 40px;"
-    />
+        <center>
+          <p>Syötä kuvaus:
+            <input type="text" id="kuvaus" class="form-control" name="kuvaus" maxlength="45" placeholder="Kuvaus" />
+          </p>
+        </center>
+        <br />
 
-  </div></center>
-  </div>
+        <center>
+          <p>Syötä summa euroina:
+            <input type="number" step="0.01" id="summa" class="form-control"
+              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+              type="number" maxlength="10" name="summa" placeholder="Summa" required />
+          </p>
+        </center>
+        <br />
+
+        <center>
+          <div>
+            <button onclick="location.href='/'" type="button" class="btn btn-primary"
+              style="width: 180px; height: 40px;">
+              Palaa etusivulle
+            </button>
+
+            <div class="divider"></div>
+
+            <input type="submit" value="Hyväksy meno" class="btn btn-success" style="width: 180px; height: 40px;" />
+
+          </div>
+        </center>
+      </div>
   </form>
   <center>
-    <button 
-    onclick="location.href='/logout'" 
-    type="button" 
-    class="btn btn-danger logoutbtnPos">Kirjaudu ulos</button>
+    <button onclick="location.href='/logout'" type="button" class="btn btn-danger logoutbtnPos">Kirjaudu ulos</button>
   </center>
-  </body>
+</body>
+
 </html>

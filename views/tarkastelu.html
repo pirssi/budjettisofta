@@ -60,6 +60,8 @@
             $.get(
                 "/tarkastelu/" + aliId,
                 function (data, status, xhr) {
+                    $("#menot").append('<thead>' + '<tr>' + '</tr>' +'<th>'+ "Nimi" + '</th>' + '<th>'+ "Päivämäärä" + '</th>' + '<th>'+ "Ostopaikka" + '</th>' + '<th>'+ "Kuvaus" + '</th>' + '<th>'+ "Summa" + '</th>' + '</tr>' + '</thead>');
+                    
                     $.each(data, function (index, data) {
                         $("#menot").append('<tr><td>' + data.Nimi + '</td><td>' + data.Pvm + '</td><td>' + data.Ostospaikka + '</td><td>' + data.Kuvaus + '</td><td>' + data.Summa + '</td></tr>');
                     });
@@ -104,13 +106,13 @@
         }
 
     </script>
-    <title>Menojen kirjaaminen</title>
+    <title>Menojen tarkastelu</title>
 </head>
 
 <body>
     <header>
         <h1>
-            <center>Menojen kirjaaminen</center>
+            <center>Menojen tarkastelu</center>
         </h1>
     </header>
     <br />
@@ -122,10 +124,9 @@
     <% } %>
 
     <br />
-    <br />
-    <form action="/tarkastelu" method="POST">
+    <form>
         <div>
-            <div class="col-md-4 col-md-offset-4" style="background-color:rgb(135, 165, 204); border-style:inherit; 
+            <div class="col-md-4 col-md-offset-4" style="background-color:rgb(135, 165, 204); border-style:inherit; margin-bottom: 20px;
     padding-top: 25px;
     padding-right: 30px;
     padding-bottom: 30px;
@@ -168,26 +169,19 @@
                             Palaa etusivulle
                         </button>
 
-                        <div class="divider"></div>
-
-                        <input type="submit" value="Hae menot" class="btn btn-success"
-                            style="width: 180px; height: 40px;" />
 
                     </div>
                 </center>
             </div>
     </form>
-
-    <table id="menot">
-        <tbody>
-            <tr>
-            </tr>
-        </tbody>
-    </table>
+    <br/>
+    
+   <center> <table id="menot" class="table table-striped table-bordered" >
+        
+   </table></center>
 
     <center>
-        <button onclick="location.href='/logout'" type="button" class="btn btn-danger logoutbtnPos">Kirjaudu
-            ulos</button>
+        <button onclick="location.href='/logout'" type="button" class="btn btn-danger logoutbtnPos">Kirjaudu ulos</button>
     </center>
 </body>
 

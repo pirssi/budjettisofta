@@ -71,7 +71,7 @@
                         $("#menot").append('<tr><td>' + data.Nimi + '</td><td>' + data.Kuvaus + '</td><td>' + data.Ostospaikka + '</td><td>' + pvm + '</td><td>' + data.Summa + ' €' + '</td></tr>');
                     });
                     $("#menot").append('<tr><td></td></tr>')
-                    $("#menot").append('<tr><td>' + 'Menot yhteensä' + '</td><td>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td><td>' + yhtSumma + ' €' + '</td></tr>');
+                    $("#menot").append('<tr><td>' + 'Menot yhteensä' + '</td><td>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td><td>' + Math.round((yhtSumma + Number.EPSILON) * 100) / 100 + ' €' + '</td></tr>');
                 })
         }
 

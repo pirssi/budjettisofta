@@ -188,9 +188,11 @@ module.exports = {
             [kayttajaId, budjettiId],
             function (error) {
               if (error) {
-                console.log(budjettiId + " " + kayttajaId + " budjettiId ja kayttajaId");
+                console.log(
+                  budjettiId + " " + kayttajaId + " budjettiId ja kayttajaId"
+                );
                 console.log("yhdistäminen ei onnistunut " + error);
-                
+
                 res.render("lisaabudjetti.html", {
                   msg: error.message,
                   name: req.session.username,
@@ -213,7 +215,7 @@ module.exports = {
 
   fetchBudgets: function (req, res) {
     dbConnection.query(
-      "SELECT K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = ?",
+      "SELECT B.Id, K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = ?",
       [req.params.id],
       function (error, results) {
         if (error) {

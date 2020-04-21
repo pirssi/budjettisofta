@@ -320,7 +320,7 @@ module.exports = {
 
   menotTotal: function (req, res) {
     dbConnection.query(
-      "SELECT Summa FROM hyodyke WHERE Aliryhma_Id = ?",
+      "SELECT Nimi, Pvm, Ostospaikka, Kuvaus, Summa FROM hyodyke WHERE Aliryhma_Id = ?",
       [req.params.id],
       function (error, results) {
         if (error) {

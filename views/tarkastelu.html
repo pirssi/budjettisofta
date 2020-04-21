@@ -39,16 +39,19 @@
 
         function selectBudget() {
             budgetId = $("#budjetit :selected").val();
+            $("#menot").empty();
             fetchPaaryhmat();
         }
 
         function selectPaaryhma() {
             paaId = $("#paaryhmat :selected").val();
+            $("#menot").empty();
             fetchAliryhmat();
         }
 
         function selectAliryhma() {
             aliId = $("#aliryhmat :selected").val();
+            $("#menot").empty();
             fetchMenot();
         }
 
@@ -58,7 +61,7 @@
                 "/tarkastelu/" + aliId,
                 function (data, status, xhr) {
                     $.each(data, function (index, data) {
-                        $("#menot").append('<tr><td>' + data.Summa + '</td></tr>');  //Miksei toimi ??
+                        $("#menot").append('<tr><td>' + data.Nimi + '</td><td>' + data.Pvm + '</td><td>' + data.Ostospaikka + '</td><td>' + data.Kuvaus + '</td><td>' + data.Summa + '</td></tr>');
                     });
                 })
         }
@@ -178,7 +181,6 @@
     <table id="menot">
         <tbody>
             <tr>
-                <td>test</td>
             </tr>
         </tbody>
     </table>

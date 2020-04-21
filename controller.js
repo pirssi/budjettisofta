@@ -213,6 +213,60 @@ module.exports = {
     );
   },
 
+  lisaapaaryhma: async function (req, res) {
+    const nimi = req.body.nimi;
+    const budgetId = req.body.budgetId;
+
+    dbConnection.query(
+      //pääryhmän lisääminen
+      "INSERT INTO paaryhma (Nimi, Budjetti_Id) VALUES (?, ?)",
+      [nimi, budgetId],
+      function (error, results) {
+        if (error) {
+          res.render("lisaapaaryhma.html", {
+            msg: error.message,
+            name: req.session.username,
+            userId: req.session.userId,
+          });
+        } else {
+          console.log("lisätty paaryhmaid: " + results.insertId);
+          res.render("lisaapaaryhma.html", {
+            msg: "Pääryhmä lisätty!",
+            name: req.session.username,
+            userId: req.session.userId,
+          });
+        }
+      }
+    );
+  },
+
+  lisaaaliryhma: async function (req, res) {
+    const nimi = req.body.nimi;
+    const paaId = req.body.paaId;
+
+    dbConnection.query(
+      //aliryhmän lisääminen
+      "INSERT INTO aliryhma (Nimi, Paaryhma_Id) VALUES (?, ?)",
+      [nimi, paaId],
+      function (error, results) {
+        if (error) {
+          res.render("lisaaaliryhma.html", {
+            msg: error.message,
+            name: req.session.username,
+            userId: req.session.userId,
+          });
+        } else {
+          console.log("lisätty aliryhmaid: " + results.insertId);
+          res.render("lisaaaliryhma.html", {
+            msg: "Aliryhmä lisätty!",
+            name: req.session.username,
+            userId: req.session.userId,
+          });
+        }
+      }
+    );
+  },
+
   fetchBudgets: function (req, res) {
     dbConnection.query(
       "SELECT B.Id, K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = ?",
@@ -262,5 +316,5 @@ module.exports = {
         }
       }
     );
-  }
+  },
 };

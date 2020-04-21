@@ -17,7 +17,7 @@ const app = express();
 const hostname = "127.0.0.1";
 const port = 3001;
 
-app.engine('html', require('ejs').renderFile);
+app.engine("html", require("ejs").renderFile);
 app.use(allowCrossDomain);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,7 +25,7 @@ app.use(
   session({
     resave: true,
     saveUninitialized: true,
-    secret: "89fd57581173dbe97a1e2b9221646b13082d174c78992182c086500f02d49e7b"
+    secret: "89fd57581173dbe97a1e2b9221646b13082d174c78992182c086500f02d49e7b",
   })
 );
 
@@ -38,7 +38,8 @@ app.route("/").get((req, res) => {
   res.end();
 });
 
-app.route("/login")
+app
+  .route("/login")
   .get((req, res) => {
     if (req.session.loggedIn) {
       res.redirect("/");
@@ -49,7 +50,8 @@ app.route("/login")
   })
   .post(controller.login);
 
-app.route("/register")
+app
+  .route("/register")
   .get((_req, res) => {
     res.render("register.html");
   })
@@ -61,23 +63,26 @@ app.route("/logout").get((req, res) => {
   res.end();
 });
 
-app.route("/menot").get((req, res) => {
-  if (req.session.loggedIn) {
-    res.render("menot.html",{
-      name: req.session.username,
-      userId: req.session.userId});   
-  } else {
-    res.redirect("/login");
-  }
-  res.end();
+app
+  .route("/menot")
+  .get((req, res) => {
+    if (req.session.loggedIn) {
+      res.render("menot.html", {
+        name: req.session.username,
+        userId: req.session.userId,
+      });
+    } else {
+      res.redirect("/login");
+    }
+    res.end();
   })
-  .post(controller.syotameno); 
+  .post(controller.syotameno);
 
 app.route("/budjetit").get((req, res) => {
   if (req.session.loggedIn) {
     res.render("budjetit.html", {
       name: req.session.username,
-      userId: req.session.userId
+      userId: req.session.userId,
     });
   } else {
     res.redirect("/login");
@@ -85,18 +90,50 @@ app.route("/budjetit").get((req, res) => {
   res.end();
 });
 
-app.route("/lisaabudjetti").get((req, res) => {
-  if (req.session.loggedIn) {
-    res.render("lisaabudjetti.html", {
-      name: req.session.username,
-      userId: req.session.userId
-    });
-  } else {
-    res.redirect("/login");
-  }
-  res.end();
-})
-.post(controller.lisaabudjetti);
+app
+  .route("/lisaabudjetti")
+  .get((req, res) => {
+    if (req.session.loggedIn) {
+      res.render("lisaabudjetti.html", {
+        name: req.session.username,
+        userId: req.session.userId,
+      });
+    } else {
+      res.redirect("/login");
+    }
+    res.end();
+  })
+  .post(controller.lisaabudjetti);
+
+app
+  .route("/lisaapaaryhma")
+  .get((req, res) => {
+    if (req.session.loggedIn) {
+      res.render("lisaapaaryhma.html", {
+        name: req.session.username,
+        userId: req.session.userId,
+      });
+    } else {
+      res.redirect("/login");
+    }
+    res.end();
+  })
+  .post(controller.lisaapaaryhma);
+
+app
+  .route("/lisaaaliryhma")
+  .get((req, res) => {
+    if (req.session.loggedIn) {
+      res.render("lisaaaliryhma.html", {
+        name: req.session.username,
+        userId: req.session.userId,
+      });
+    } else {
+      res.redirect("/login");
+    }
+    res.end();
+  })
+  .post(controller.lisaaaliryhma);
 
 app.route("/kayttajanbudjetit/:id").get(controller.fetchBudgets);
 app.route("/paaryhma/:id").get(controller.fetchPaaryhmat);

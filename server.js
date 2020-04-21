@@ -138,6 +138,22 @@ app
 app.route("/kayttajanbudjetit/:id").get(controller.fetchBudgets);
 app.route("/paaryhma/:id").get(controller.fetchPaaryhmat);
 app.route("/aliryhma/:id").get(controller.fetchAliryhmat);
+app.route("/tarkastelu/:id").get(controller.menotTotal);
+
+app
+  .route("/tarkastelu")
+  .get((req, res) => {
+    if (req.session.loggedIn) {
+      res.render("tarkastelu.html", {
+        name: req.session.username,
+        userId: req.session.userId,
+      });
+    } else {
+      res.redirect("/login");
+    }
+    res.end();
+  })
+  .post(controller.menotTotal);
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);

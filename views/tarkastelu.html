@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        .divider {
+            width: 40px;
+            height: auto;
+            display: inline-block;
+        }
+
+        .logoutbtnPos {
+            position: fixed;
+            right: 10px;
+            top: 10px;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+
+        var userId = <%= userId %> ; //huutaa erroreita, mut toimii
+        var budgetId;
+        var paaId;
+        var aliId;
+
+        $(function () {
+            fetchBudgets();
+            $("#paaryhmat").append('<option value="-1">Valitse</option>');
+            $("#aliryhmat").append('<option value="-1">Valitse</option>');
+        });
+
+        function selectBudget() {
+            budgetId = $("#budjetit :selected").val();
+            fetchPaaryhmat();
+        }
+
+        function selectPaaryhma() {
+            paaId = $("#paaryhmat :selected").val();
+            fetchAliryhmat();
+        }
+
+        function selectAliryhma() {
+            aliId = $("#aliryhmat :selected").val();
+            fetchMenot();
+        }
+
+        function fetchMenot() {
+            $.get(
+                "/tarkastelu/" + aliId,
+                function (data, status, xhr) {
+                    $.each(data, function (index, data) {
+                        $("#menot").append('<tr><td>' + data.Summa + '</td></tr>');  //Miksei toimi ??
+                    });
+                })
+        }
+
+        function fetchBudgets() {
+            $.get(
+                "/kayttajanbudjetit/" + userId,
+                function (data, status, xhr) {
+                    $("#budjetit").append('<option value="-1">Valitse</option>');
+                    $.each(data, function (index, data) {
+                        $("#budjetit").append('<option value="' + data.Id + '">' + data.NIMI + "</option>");
+                    });
+                })
+        }
+
+        function fetchPaaryhmat() {
+            $("#paaryhmat").empty();
+            $("#aliryhmat").empty();
+            $("#aliryhmat").append('<option value="-1">Valitse</option>');
+            $.get(
+                "/paaryhma/" + budgetId,
+                function (data, status, xhr) {
+                    $("#paaryhmat").append('<option value="-1">Valitse</option>');
+                    $.each(data, function (index, data) {
+                        $("#paaryhmat").append('<option value="' + data.Id + '">' + data.Nimi + "</option>");
+                    });
+                })
+        }
+
+        function fetchAliryhmat() {
+            $("#aliryhmat").empty();
+            $.get(
+                "/aliryhma/" + paaId,
+                function (data, status, xhr) {
+                    $("#aliryhmat").append('<option value="-1">Valitse</option>');
+                    $.each(data, function (index, data) {
+                        $("#aliryhmat").append('<option value="' + data.Id + '">' + data.Nimi + "</option>");
+                    });
+                })
+        }
+
+    </script>
+    <title>Menojen kirjaaminen</title>
+</head>
+
+<body>
+    <header>
+        <h1>
+            <center>Menojen kirjaaminen</center>
+        </h1>
+    </header>
+    <br />
+
+    <% if (locals.msg) { %>
+    <center>
+        <h2><%= msg %></h2>
+    </center>
+    <% } %>
+
+    <br />
+    <br />
+    <form action="/tarkastelu" method="POST">
+        <div>
+            <div class="col-md-4 col-md-offset-4" style="background-color:rgb(135, 165, 204); border-style:inherit; 
+    padding-top: 25px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    padding-left: 30px;
+    border-radius: 25px;">
+                <center>
+                    <p>
+                        Valitse budjetti:
+                        <select onchange="selectBudget()" id="budjetit" name="budjetit" class="form-control" required>
+                        </select>
+                    </p>
+                </center>
+                <br />
+
+                <center>
+                    <p>
+                        Valitse pääryhmä:
+                        <select onchange="selectPaaryhma()" id="paaryhmat" name="paaryhma" class="form-control"
+                            required>
+                        </select>
+                </center>
+                </p>
+                <br />
+
+                <center>
+                    <p>
+                        Valitse aliryhmä:
+                        <select onchange="selectAliryhma()" id="aliryhmat" name="aliryhma" class="form-control"
+                            required>
+                        </select>
+                </center>
+                </p>
+                <br />
+
+
+                <center>
+                    <div>
+                        <button onclick="location.href='/'" type="button" class="btn btn-primary"
+                            style="width: 180px; height: 40px;">
+                            Palaa etusivulle
+                        </button>
+
+                        <div class="divider"></div>
+
+                        <input type="submit" value="Hae menot" class="btn btn-success"
+                            style="width: 180px; height: 40px;" />
+
+                    </div>
+                </center>
+            </div>
+    </form>
+
+    <table id="menot">
+        <tbody>
+            <tr>
+                <td>test</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <center>
+        <button onclick="location.href='/logout'" type="button" class="btn btn-danger logoutbtnPos">Kirjaudu
+            ulos</button>
+    </center>
+</body>
+
+</html>

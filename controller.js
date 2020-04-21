@@ -317,4 +317,21 @@ module.exports = {
       }
     );
   },
+
+  menotTotal: function (req, res) {
+    dbConnection.query(
+      "SELECT Summa FROM hyodyke WHERE Aliryhma_Id = ?",
+      [req.params.id],
+      function (error, results) {
+        if (error) {
+          console.log("Error fetching data from db, reason: " + error);
+          res.send({ code: "NOT OK", error_msg: error, data: "" });
+        } else {
+          console.log("Data = " + JSON.stringify(results));
+          res.statusCode = 200;
+          res.json(results);
+        }
+      }
+    );
+  },
 };

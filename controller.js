@@ -215,7 +215,7 @@ module.exports = {
 
   lisaapaaryhma: async function (req, res) {
     const nimi = req.body.nimi;
-    const budgetId = req.body.budgetId;
+    const budgetId = req.body.budjetit;
 
     dbConnection.query(
       //pääryhmän lisääminen

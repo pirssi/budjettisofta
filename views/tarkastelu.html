@@ -53,6 +53,7 @@
         }
 
         function fetchMenot() {
+            $("#menot").empty();
             $.get(
                 "/tarkastelu/" + aliId,
                 function (data, status, xhr) {

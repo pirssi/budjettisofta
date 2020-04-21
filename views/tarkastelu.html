@@ -56,15 +56,22 @@
         }
 
         function fetchMenot() {
+            var yhtSumma = 0;
+
             $("#menot").empty();
             $.get(
                 "/tarkastelu/" + aliId,
                 function (data, status, xhr) {
-                    $("#menot").append('<thead>' + '<tr>' + '</tr>' +'<th>'+ "Nimi" + '</th>' + '<th>'+ "Päivämäärä" + '</th>' + '<th>'+ "Ostopaikka" + '</th>' + '<th>'+ "Kuvaus" + '</th>' + '<th>'+ "Summa" + '</th>' + '</tr>' + '</thead>');
-                    
+                    $("#menot").append('<thead>' + '<tr>' + '</tr>' + '<th>' + "Nimi" + '</th>' + '<th>' + "Kuvaus" + '</th>' + '<th>' + "Ostopaikka" + '</th>' + '<th>' + "Päivämäärä" + '</th>' + '<th>' + "Summa" + '</th>' + '</tr>' + '</thead>');
+
                     $.each(data, function (index, data) {
-                        $("#menot").append('<tr><td>' + data.Nimi + '</td><td>' + data.Pvm + '</td><td>' + data.Ostospaikka + '</td><td>' + data.Kuvaus + '</td><td>' + data.Summa + '</td></tr>');
+                        yhtSumma += data.Summa;
+                        var d = new Date(data.Pvm);
+                        var pvm = d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear();
+                        $("#menot").append('<tr><td>' + data.Nimi + '</td><td>' + data.Kuvaus + '</td><td>' + data.Ostospaikka + '</td><td>' + pvm + '</td><td>' + data.Summa + ' €' + '</td></tr>');
                     });
+                    $("#menot").append('<tr><td></td></tr>')
+                    $("#menot").append('<tr><td>' + 'Menot yhteensä' + '</td><td>' + '' + '</td><td>' + '' + '</td><td>' + '' + '</td><td>' + yhtSumma + ' €' + '</td></tr>');
                 })
         }
 
@@ -174,14 +181,17 @@
                 </center>
             </div>
     </form>
-    <br/>
-    
-   <center> <table id="menot" class="table table-striped table-bordered" >
-        
-   </table></center>
+    <br />
 
     <center>
-        <button onclick="location.href='/logout'" type="button" class="btn btn-danger logoutbtnPos">Kirjaudu ulos</button>
+        <table id="menot" class="table table-striped table-bordered">
+
+        </table>
+    </center>
+
+    <center>
+        <button onclick="location.href='/logout'" type="button" class="btn btn-danger logoutbtnPos">Kirjaudu
+            ulos</button>
     </center>
 </body>
 

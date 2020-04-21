@@ -100,6 +100,7 @@ app.route("/lisaabudjetti").get((req, res) => {
 
 app.route("/kayttajanbudjetit/:id").get(controller.fetchBudgets);
 app.route("/paaryhma/:id").get(controller.fetchPaaryhmat);
+app.route("/aliryhma/:id").get(controller.fetchAliryhmat);
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);

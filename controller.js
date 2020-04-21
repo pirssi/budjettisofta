@@ -231,7 +231,6 @@ module.exports = {
   },
 
   fetchPaaryhmat: function (req, res) {
-    //tää on ehkä oikein mutta menot sivun fetchPaaryhmat tarviaa päivitystä
     dbConnection.query(
       "SELECT Id, Nimi FROM paaryhma WHERE Budjetti_Id = ?",
       [req.params.id],
@@ -247,4 +246,21 @@ module.exports = {
       }
     );
   },
+
+  fetchAliryhmat: function (req, res) {
+    dbConnection.query(
+      "SELECT Id, Nimi FROM aliryhma WHERE Paaryhma_Id = ?",
+      [req.params.id],
+      function (error, results) {
+        if (error) {
+          console.log("Error fetching data from db, reason: " + error);
+          res.send({ code: "NOT OK", error_msg: error, data: "" });
+        } else {
+          console.log("Data = " + JSON.stringify(results));
+          res.statusCode = 200;
+          res.json(results);
+        }
+      }
+    );
+  }
 };

@@ -242,7 +242,7 @@ module.exports = {
 
   lisaaaliryhma: async function (req, res) {
     const nimi = req.body.nimi;
-    const paaId = req.body.paaId;
+    const paaId = req.body.paaryhma;
 
     dbConnection.query(
       //aliryhmän lisääminen

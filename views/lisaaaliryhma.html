@@ -14,7 +14,6 @@
       right: 10px;
       top: 10px;
     }
-
     .koko {
     width: 140px !important;
     height: 45px;
@@ -34,16 +33,23 @@
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
-
+   
     var userId = <%= userId %> ; //huutaa erroreita, mut toimii
     var budgetId;
+    var paaId;
 
     $(function () {
       fetchBudgets();
+      $("#paaryhmat").append('<option value="-1">Valitse</option>');
     });
 
     function selectBudget() {
       budgetId = $("#budjetit :selected").val();
+      fetchPaaryhmat();
+    }
+
+    function selectPaaryhma() {
+      paaId = $("#paaryhmat :selected").val();
     }
 
     function fetchBudgets() {
@@ -57,15 +63,26 @@
         })
     }
 
-  </script>
-  <title>Pääryhmän lisääminen</title>
-</head>
+    function fetchPaaryhmat() {
+      $("#paaryhmat").empty();
+      $.get(
+        "/paaryhma/" + budgetId,
+        function (data, status, xhr) {
+          $("#paaryhmat").append('<option value="-1">Valitse</option>');
+          $.each(data, function (index, data) {
+            $("#paaryhmat").append('<option value="' + data.Id + '">' + data.Nimi + "</option>");
+          });
+        })
+    }
 
+  </script>
+  <title>Aliryhmän lisääminen</title>
+</head>
 
 <body>
   <header>
     <h1>
-      <center>Pääryhmän lisääminen</center>
+      <center>Aliryhmän lisääminen</center>
     </h1>
   </header>
   <br/>
@@ -75,7 +92,7 @@
     <% } %>
     
   <br />
-  <form action="/lisaapaaryhma" method="POST">
+  <form action="/lisaaaliryhma" method="POST">
     <div>
       <div class="col-md-4 col-md-offset-4" style="background-color:rgb(135, 165, 204); border-style:inherit; 
     padding-top: 20px;
@@ -93,7 +110,16 @@
         <br />
 
         <center>
-          <p>Syötä pääryhmän nimi:
+          <p>
+            Valitse pääryhmä:
+            <select onchange="selectPaaryhma()" id="paaryhmat" name="paaryhma" class="form-control" required>
+            </select>
+        </center>
+        </p>
+        <br />
+
+        <center>
+          <p>Syötä aliryhmän nimi:
             <input type="text" class="form-control" id="nimi" name="nimi" minlength="3" maxlength="45"
               placeholder="Nimi" required />
           </p>
@@ -102,17 +128,18 @@
 
         <center>
           <div>
-            <button onclick="location.href='/lisaabudjetti'" type="button" class="btn btn-primary koko"
-             >Lisää budjetteja
+            <button onclick="location.href='/lisaapaaryhma'" type="button" class="btn btn-primary koko">
+            Lisää pääryhmiä
             </button>
 
             <div class="divider"></div>
 
-            <input type="submit" value="Lisää pääryhmä" class="btn btn-success hyvaksykoko" style="width: 180px; height: 45px;" />
+            <input type="submit" value="Lisää aliryhmä" class="btn btn-success hyvaksykoko"/>
 
             <div class="divider"></div>
 
-            <button onclick="location.href='/lisaaaliryhma'" type="button" class="btn btn-primary koko" >Lisää aliryhmiä
+            <button onclick="location.href='/budjetit'" type="button" class="btn btn-primary koko">
+            Budjetit
             </button>
 
           </div>

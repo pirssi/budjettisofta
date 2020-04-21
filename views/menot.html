@@ -139,6 +139,12 @@
       <center>Menojen kirjaaminen</center>
     </h1>
   </header>
+  <br/>
+
+  <% if (locals.msg) { %>
+   <center><h2><%= msg %></h2></center> 
+    <% } %>
+    
   <br />
   <br />
   <form action="/menot" method="POST">

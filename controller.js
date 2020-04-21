@@ -143,7 +143,7 @@ module.exports = {
       function (error) {
         if (error) {
           res.render("menot.html", {
-            msg: error.message,
+            msg: "Tapahtui virhe, yritä uudestaan",
             name: req.session.username,
             userId: req.session.userId,
           });

@@ -269,7 +269,7 @@ module.exports = {
 
   fetchBudgets: function (req, res) {
     dbConnection.query(
-      "SELECT B.Id, K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = ?",
+      "SELECT B.Koko, B.Id, K.NIMI, B.NIMI FROM kayttaja AS K INNER JOIN kayttajanbudjetit AS KB ON K.ID = KB.Kayttaja_Id INNER JOIN budjetti AS B ON KB.Budjetti_Id = B.Id WHERE K.Id = ?",
       [req.params.id],
       function (error, results) {
         if (error) {

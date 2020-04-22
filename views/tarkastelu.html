@@ -79,9 +79,11 @@
             $.get(
                 "/kayttajanbudjetit/" + userId,
                 function (data, status, xhr) {
+                    
                     $("#budjetit").append('<option value="-1">Valitse</option>');
                     $.each(data, function (index, data) {
-                        $("#budjetit").append('<option value="' + data.Id + '">' + data.NIMI + "</option>");
+                        $("#budjetit").append('<option value="' + data.Id + '">' + data.NIMI + ", koko = " + data.Koko +" €"+"</option>");
+                        
                     });
                 })
         }
@@ -89,13 +91,14 @@
         function fetchPaaryhmat() {
             $("#paaryhmat").empty();
             $("#aliryhmat").empty();
-            $("#aliryhmat").append('<option value="-1">Valitse</option>');
+            $("#aliryhmat").append('<option value="-1">Valitse</option>');                    
             $.get(
                 "/paaryhma/" + budgetId,
                 function (data, status, xhr) {
                     $("#paaryhmat").append('<option value="-1">Valitse</option>');
                     $.each(data, function (index, data) {
                         $("#paaryhmat").append('<option value="' + data.Id + '">' + data.Nimi + "</option>");
+                        
                     });
                 })
         }
@@ -182,6 +185,10 @@
             </div>
     </form>
     <br />
+
+    <center><table id="bsumma" class="table">
+
+    </table></center>
 
     <center>
         <table id="menot" class="table table-striped table-bordered">
